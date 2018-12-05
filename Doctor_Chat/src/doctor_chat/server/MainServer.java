@@ -11,6 +11,7 @@ package doctor_chat.server;
  */
 public class MainServer {
     public static void main(String[] args) {
-        
+        System.out.println("here\n");
+        System.out.println("here\n" + DBConnection.instance().getConnection());
     }    
 }

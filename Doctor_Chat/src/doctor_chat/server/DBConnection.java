@@ -6,6 +6,12 @@
 package doctor_chat.server;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import oracle.jdbc.pool.OracleDataSource;
 
 /**
  *
@@ -15,17 +21,35 @@ public class DBConnection {
     private static DBConnection instance = null;
     private Connection co;
     
-    private DBConnection() {
+    private DBConnection() throws SQLException {
         this.co = null;
+        //MysqlDataSource dataSource = new MysqlDataSource();
+        
+        Properties connectionProperties = new Properties();
+        connectionProperties.put("user", ConnectionSettings.getLogin());
+        connectionProperties.put("password", ConnectionSettings.getPassword());
+        String jbcdURL = "jdbc:oracle:thin:@" +
+                    ConnectionSettings.getHost() +
+                    ":" + ConnectionSettings.getPort() +
+                    ":" + ConnectionSettings.getSID();
+System.out.println(jbcdURL);
+        OracleDataSource ds = new OracleDataSource();
+        ds.setURL(jbcdURL);
+        this.co = ds.getConnection(ConnectionSettings.getLogin(), ConnectionSettings.getPassword());
     }
     public static DBConnection instance() {
         if (instance == null)
         {
             synchronized(DBConnection.class) {
                 if (instance == null)
-                    instance = new DBConnection();
+                    try {
+                        instance = new DBConnection();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         return instance;
     }
+    public Connection getConnection()   {return this.co;}
 }
