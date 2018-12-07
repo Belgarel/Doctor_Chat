@@ -5,13 +5,20 @@
  */
 package doctor_chat.server;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Home
  */
 public class MainServer {
     public static void main(String[] args) {
-        System.out.println("here\n");
-        System.out.println("here\n" + DBConnection.instance().getConnection());
+        try {
+            UserService.instance().findUser("test", "123");
+        } catch (NotFoundException|AuthentificationFailedException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(MainServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
 }

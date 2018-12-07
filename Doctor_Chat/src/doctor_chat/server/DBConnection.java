@@ -32,7 +32,6 @@ public class DBConnection {
                     ConnectionSettings.getHost() +
                     ":" + ConnectionSettings.getPort() +
                     ":" + ConnectionSettings.getSID();
-System.out.println(jbcdURL);
         OracleDataSource ds = new OracleDataSource();
         ds.setURL(jbcdURL);
         this.co = ds.getConnection(ConnectionSettings.getLogin(), ConnectionSettings.getPassword());
