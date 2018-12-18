@@ -7,11 +7,7 @@ package doctor_chat.common;
 
 import java.awt.Color;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -20,26 +16,35 @@ import java.util.Set;
 public class User implements Serializable{
     private long num;
     private String login;
-    private String mdp;
     private Color color;
-    private HashSet<Integer> contactIds;
+    private HashSet<Long> contactIds;
+    private HashSet<Conversation> conversations;
     
     public User() {
         this.num = -1;
         this.login = "";
-        this.mdp = "";
         this.color = Color.BLACK;
-        this.contactIds = new HashSet<Integer>();
+        this.contactIds = new HashSet<Long>();
+        this.conversations = new HashSet<Conversation>();
     }
     
-    public boolean addContact(int userId) {
+    public boolean addContact(long userId) {
         return this.contactIds.add(userId);
     }
-    public boolean removeContact(int userId) {
+    public boolean removeContact(long userId) {
         return this.contactIds.remove(userId);
     }
-    public boolean isContact(int userId) {
+    public boolean isContact(long userId) {
         return this.contactIds.contains(userId);
+    }
+    public boolean addConversations(Conversation convo) {
+        return this.conversations.add(convo);
+    }
+    public boolean removeConversation(Conversation convo) {
+        return this.conversations.remove(convo);
+    }
+    public boolean isConversation(Conversation convo) {
+        return this.conversations.contains(convo);
     }
 
     public long getNum() {
@@ -54,22 +59,16 @@ public class User implements Serializable{
     public void setLogin(String login) {
         this.login = login;
     }
-    public String getMdp() {
-        return mdp;
-    }
-    public void setMdp(String mdp) {
-        this.mdp = mdp;
-    }
     public Color getColor() {
         return color;
     }
     public void setColor(Color color) {
         this.color = color;
     }
-    public HashSet<Integer> getContacts() {
+    public HashSet<Long> getContacts() {
         return this.contactIds;
     }
-    public void setContacts(HashSet<Integer> contacts) {
+    public void setContacts(HashSet<Long> contacts) {
         this.contactIds = contacts;
     }
     
