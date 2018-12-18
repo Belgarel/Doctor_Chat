@@ -5,6 +5,8 @@
  */
 package doctor_chat.server;
 
+import doctor_chat.common.NotFoundException;
+import doctor_chat.common.AuthentificationFailedException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,7 +29,7 @@ public class UserService {
             results = request.executeQuery(sql);
             if (!results.next()) //if the login was not found
                 throw new NotFoundException(results.toString());
-            if (password == null || password != results.getString(1)) //if the pasword is wrong
+            if (password == null || !password.equals(results.getString(1))) //if the pasword is wrong
                 throw new AuthentificationFailedException();
             //return true after closing the statement and resultset (finally)
         } catch (SQLException ex) {

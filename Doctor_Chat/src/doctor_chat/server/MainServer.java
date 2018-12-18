@@ -5,6 +5,8 @@
  */
 package doctor_chat.server;
 
+import doctor_chat.common.NotFoundException;
+import doctor_chat.common.AuthentificationFailedException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +19,7 @@ public class MainServer {
         try {
             UserService.instance().findUser("test", "123");
         } catch (NotFoundException|AuthentificationFailedException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("ici" + ex.getMessage());
             Logger.getLogger(MainServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
