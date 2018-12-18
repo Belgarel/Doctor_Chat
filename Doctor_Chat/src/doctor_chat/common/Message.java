@@ -16,12 +16,14 @@ class Message {
     private Date date;
     private String content;
     private String filePath;
+    private long convId;
 
-    public Message(User author, Date date, String content, String filePath) {
+    public Message(User author, Date date, String content, String filePath, long convId) {
         this.author = author;
         this.date = date;
         this.content = content;
         this.filePath = filePath;
+        this.convId = convId;
     }
     
     public User getAuthor() {
@@ -48,4 +50,11 @@ class Message {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
+    public long getConvId() {
+        return convId;
+    }
+    public void setConvId(long convId) {
+        this.convId = convId;
+    }
+    
 }
