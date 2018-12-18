@@ -16,6 +16,7 @@ import java.util.HashSet;
 public class User implements Serializable{
     private long num;
     private String login;
+    private String password;
     private Color color;
     private HashSet<Long> contactIds;
     private HashSet<Conversation> conversations;
@@ -23,6 +24,7 @@ public class User implements Serializable{
     public User() {
         this.num = -1;
         this.login = "";
+        this.password = "";
         this.color = Color.BLACK;
         this.contactIds = new HashSet<Long>();
         this.conversations = new HashSet<Conversation>();
@@ -58,6 +60,12 @@ public class User implements Serializable{
     }
     public void setLogin(String login) {
         this.login = login;
+    }
+    public String setPassword() {
+        return password;
+    }
+    public void setMdp(String mdp) {
+        this.password = login;
     }
     public Color getColor() {
         return color;
