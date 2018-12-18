@@ -35,19 +35,15 @@ public class UserService {
     }
     
     public User findUser(Long id) throws NotFoundException {
-        User ret = new User();
+        User ret = null;
         Statement request = null;
         ResultSet results = null;
         String sql = "select password from drc_utilisateur where no_utilisateur = '" + id + "'";
         try {
             request = DBConnection.instance().getConnection().createStatement();
             results = request.executeQuery(sql);
-            if (!results.next()) //if the login was not found
-                throw new NotFoundException(results.toString());
             
-            ret.setNum(Long.valueOf(results.getNString("NO_UTILISATEUR")));
-            ret.setLogin(results.getNString("LOGIN"));
-            ret.setMdp(results.getNString("PASSWORD"));
+            ret = toUser(results);
             //return true after closing the statement and resultset (finally)
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
@@ -64,20 +60,15 @@ public class UserService {
         return ret;
     }
     public User findUser(String login) throws NotFoundException {
-        User ret = new User();
+        User ret = null;
         Statement request = null;
         ResultSet results = null;
         String sql = "select password from drc_utilisateur where login = '" + login + "'";
         try {
             request = DBConnection.instance().getConnection().createStatement();
             results = request.executeQuery(sql);
-            if (!results.next()) //if the login was not found
-                throw new NotFoundException(results.toString());
             
-            ret.setNum(Long.valueOf(results.getNString("NO_UTILISATEUR")));
-            ret.setLogin(results.getNString("LOGIN"));
-            ret.setMdp(results.getNString("PASSWORD"));
-            //return true after closing the statement and resultset (finally)
+            ret = toUser(results);
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -92,6 +83,18 @@ public class UserService {
         }
         return ret;
     }
+    private User toUser(ResultSet results) throws NotFoundException, SQLException {
+        User ret = new User();
+        if (!results.next()) //if the user was not found
+            throw new NotFoundException(results.toString());
+
+        ret.setNum(Long.valueOf(results.getNString("NO_UTILISATEUR")));
+        ret.setLogin(results.getNString("LOGIN"));
+        ret.setMdp(results.getNString("PASSWORD"));
+        
+        return ret;
+    }
+    
     public User findUser(String login, String password) throws NotFoundException, AuthentificationFailedException {
         User ret = findUser(login);
         //check password
