@@ -7,6 +7,7 @@ package doctor_chat.server;
 
 import doctor_chat.common.NotFoundException;
 import doctor_chat.common.AuthentificationFailedException;
+import doctor_chat.common.ExistingUserException;
 import doctor_chat.common.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,10 @@ public class MainServer {
         User user = new User();
         user.setLogin("Juju");
         user.setPassword("Superjuju");
-        UserService.instance().createUser(user);
+        try {
+            UserService.instance().createUser(user);
+        } catch (ExistingUserException ex) {
+            System.out.println("User already exists.");
+        }
     }    
 }

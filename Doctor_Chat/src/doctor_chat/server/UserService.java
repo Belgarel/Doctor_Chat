@@ -5,6 +5,7 @@
  */
 package doctor_chat.server;
 
+import doctor_chat.common.ExistingUserException;
 import doctor_chat.common.NotFoundException;
 import doctor_chat.common.AuthentificationFailedException;
 import doctor_chat.common.User;
@@ -45,7 +46,7 @@ public class UserService {
         User ret = null;
         Statement request = null;
         ResultSet results = null;
-        String sql = "select password from drc_utilisateur where no_utilisateur = " + id;
+        String sql = "select * from drc_utilisateur where no_utilisateur = " + id;
         try {
             request = DBConnection.instance().getConnection().createStatement();
             results = request.executeQuery(sql);
@@ -70,7 +71,7 @@ public class UserService {
         User ret = null;
         Statement request = null;
         ResultSet results = null;
-        String sql = "select password from drc_utilisateur where login = '" + login + "'";
+        String sql = "select * from drc_utilisateur where login = '" + login + "'";
         try {
             request = DBConnection.instance().getConnection().createStatement();
             results = request.executeQuery(sql);
@@ -104,7 +105,17 @@ public class UserService {
         return ret;
     }
     
-    public void createUser(User user) {
+    public void createUser(User user) throws ExistingUserException {
+        //first, check that the user does not exist
+        User userFound = null;
+        try {
+            userFound = findUser(user.getLogin());
+        } catch (NotFoundException ex) {
+            //ignore
+        }
+        if (userFound != null)
+            throw new ExistingUserException();
+        //user creation
         Statement update = null;
         String sql = "insert into DRC_UTILISATEUR (LOGIN, PASSWORD) values ('"
                 + user.getLogin() + "', '" + user.getPassword() + "')";
