@@ -58,3 +58,30 @@ ALTER TABLE drc_contact
 RENAME COLUMN no_utilisateur_2 TO no_contact;
 
 COMMIT;
+
+INSERT INTO drc_conversation VALUES (1);
+INSERT INTO drc_conversation VALUES (2);
+INSERT INTO drc_conversation VALUES (3);
+INSERT INTO drc_conversation VALUES (4);
+INSERT INTO drc_conversation VALUES (5);
+
+INSERT INTO drc_participe VALUES (1, 1);
+INSERT INTO drc_participe VALUES (1, 3);
+INSERT INTO drc_participe VALUES (1, 5);
+
+INSERT INTO drc_participe VALUES (2, 1);
+INSERT INTO drc_participe VALUES (2, 3);
+INSERT INTO drc_participe VALUES (2, 5);
+
+
+INSERT INTO drc_participe VALUES (3, 1);
+INSERT INTO drc_participe VALUES (5, 3);
+INSERT INTO drc_participe VALUES (6, 5);
+
+ALTER TABLE drc_message ADD message CLOB;
+
+INSERT INTO drc_message VALUES (1, 1, NULL, 'test message convers 1');
+INSERT INTO drc_message VALUES (2, 3, NULL, 'test message convers 2');
+INSERT INTO drc_message VALUES (3, 5, NULL, 'test message convers 3');
+
+COMMIT;
