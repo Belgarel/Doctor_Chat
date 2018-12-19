@@ -18,6 +18,10 @@ import java.util.logging.Logger;
  */
 public class MainServer {
     public static void main(String[] args) {
-        System.out.println(ContactService.instance().findContacts(1));
+        try {
+            System.out.println(ConversationService.instance().findConversation(1));
+        } catch (NotFoundException ex) {
+            System.out.println("Not found");
+        }
     }    
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author Home
  */
 public class Conversation {
+    private long id;
     private ArrayList<User> members;
     private ArrayList<Message> messages;
 
@@ -39,20 +40,28 @@ public class Conversation {
     public boolean isMember(User member) {
         return this.members.contains(member);
     }
-    
+
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+    public ArrayList<Message> getMessages() {
+        return messages;
+    }
+    public void setMessages(ArrayList<Message> messages) {
+        this.messages = messages;
+    }
     public ArrayList<User> getMembers() {
         return members;
     }
     public void setMembers(ArrayList<User> members) {
         this.members = members;
     }
-    public ArrayList<Message> getHistory() {
-        return messages;
-    }
-
-    public void setHistory(ArrayList<Message> history) {
-        this.messages = history;
-    }
     
-    
+    public String toString() {
+        return "CONVERSATION - id : " + this.id + " ; members : " + this.members
+                + " ; messages : " + this.messages;
+    }
 }
