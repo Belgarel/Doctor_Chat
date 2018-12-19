@@ -18,13 +18,6 @@ import java.util.logging.Logger;
  */
 public class MainServer {
     public static void main(String[] args) {
-        User user = new User();
-        user.setLogin("Juju");
-        user.setPassword("Superjuju");
-        try {
-            UserService.instance().createUser(user);
-        } catch (ExistingUserException ex) {
-            System.out.println("User already exists.");
-        }
+        System.out.println(ContactService.instance().findContacts(1));
     }    
 }
