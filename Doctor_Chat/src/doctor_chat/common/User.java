@@ -61,11 +61,11 @@ public class User implements Serializable{
     public void setLogin(String login) {
         this.login = login;
     }
-    public String setPassword() {
+    public String getPassword() {
         return password;
     }
-    public void setMdp(String mdp) {
-        this.password = login;
+    public void setPassword(String password) {
+        this.password = password;
     }
     public Color getColor() {
         return color;

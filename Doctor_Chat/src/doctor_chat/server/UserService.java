@@ -33,12 +33,19 @@ public class UserService {
         }
         return ret;
     }
+    public User findUser(String login, String password) throws NotFoundException, AuthentificationFailedException {
+        User ret = findUser(login);
+        //check password
+        if (password != null && !password.equals(ret.getPassword()))
+            throw new AuthentificationFailedException();
+        return ret;
+    }
     
     public User findUser(Long id) throws NotFoundException {
         User ret = null;
         Statement request = null;
         ResultSet results = null;
-        String sql = "select password from drc_utilisateur where no_utilisateur = '" + id + "'";
+        String sql = "select password from drc_utilisateur where no_utilisateur = " + id;
         try {
             request = DBConnection.instance().getConnection().createStatement();
             results = request.executeQuery(sql);
@@ -90,23 +97,39 @@ public class UserService {
 
         ret.setNum(Long.valueOf(results.getNString("NO_UTILISATEUR")));
         ret.setLogin(results.getNString("LOGIN"));
-        ret.setMdp(results.getNString("PASSWORD"));
+        ret.setPassword(results.getNString("PASSWORD"));
+        
+        //TODO: contacts, conversations (contactService)
         
         return ret;
     }
     
-    public User findUser(String login, String password) throws NotFoundException, AuthentificationFailedException {
-        User ret = findUser(login);
-        //check password
-        if (password != null && !password.equals(ret.setPassword()))
-            throw new AuthentificationFailedException();
-        return ret;
+    public void createUser(User user) {
+        Statement update = null;
+        String sql = "insert into DRC_UTILISATEUR (LOGIN, PASSWORD) values ('"
+                + user.getLogin() + "', '" + user.getPassword() + "')";
+        try {
+            update = DBConnection.instance().getConnection().createStatement();
+            update.executeUpdate(sql);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (update != null)
+                    update.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
+    
+    private UserService() {}
     public static UserService instance() {
         if (instance == null)
         {
-            synchronized(DBConnection.class) {
+            synchronized(UserService.class) {
                 if (instance == null)
                     instance = new UserService();
             }
