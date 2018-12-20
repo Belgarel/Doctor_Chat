@@ -23,8 +23,8 @@ public class MainServer {
             + UserService.instance().findUser((long)2));
             System.out.println("CONVO 2 ------------------------ \n"
             + ConversationService.instance().toConversation((long)2));
-            System.out.println("------------------\nAdding\n------------------");
-            ConversationService.instance().addMemberToConversation(2, 2);
+            System.out.println("------------------\nRemoving\n------------------");
+            ConversationService.instance().removeMemberFromConversation(2, 2);
             System.out.println("USER 2 ------------------------- \n"
             + UserService.instance().findUser((long)2));
             System.out.println("CONVO 2 ------------------------ \n"

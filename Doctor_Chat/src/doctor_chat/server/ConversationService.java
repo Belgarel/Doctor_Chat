@@ -161,9 +161,12 @@ public class ConversationService {
             update.executeUpdate(sql);
             
         } catch (SQLException ex) {
-            System.out.println("ConversationService > addMemberToConversation : Exception SQL "
+            System.out.print("ConversationService > addMemberToConversation : Exception SQL "
                     + ex.getMessage());
-            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            if (ex.getMessage() != null && ex.getMessage().startsWith("ORA-00001"))
+                System.out.println("|The member is already part of the conversation.");
+            else
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (update != null)
@@ -174,7 +177,28 @@ public class ConversationService {
         }
     }
     public void removeMemberFromConversation(long conversationId, long userId) {
-        throw new NotImplementedException();
+        /*there is no need to check that the user is already in the conversation.
+        If they are, the query (as well as the function) will have no effect.
+        */
+        Statement update = null;
+        String sql = "delete from DRC_PARTICIPE where NO_UTILISATEUR = " + userId +
+                " and NO_CONVERSATION = " + conversationId;
+        try {
+            update = DBConnection.instance().getConnection().createStatement();
+            update.executeUpdate(sql);
+            
+        } catch (SQLException ex) {
+            System.out.println("ConversationService > removeMemberFromConversation : Exception SQL "
+                    + ex.getMessage());
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (update != null)
+                    update.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     
