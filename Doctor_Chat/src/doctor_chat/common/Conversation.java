@@ -61,7 +61,16 @@ public class Conversation {
     }
     
     public String toString() {
-        return "CONVERSATION - id : " + this.id + " ; members : " + this.members
-                + " ; messages : " + this.messages;
+        String membersString = "";
+        for (User member : this.members) {
+            membersString = membersString.concat("\n|" + member);
+        }
+        String messagesString = "";
+        for (Message message : this.messages) {
+            messagesString = messagesString.concat("\n|" + message);
+        }
+        
+        return "CONVERSATION - id : " + this.id + " ; members : " + membersString
+                + "\n|messages : " + messagesString;
     }
 }
