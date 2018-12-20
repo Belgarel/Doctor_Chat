@@ -19,7 +19,7 @@ public class User implements Serializable{
     private String password;
     private Color color;
     private HashSet<Long> contactIds;
-    private HashSet<Conversation> conversations;
+    private HashSet<Long> conversationIds;
     
     public User() {
         this.num = -1;
@@ -27,7 +27,7 @@ public class User implements Serializable{
         this.password = "";
         this.color = Color.BLACK;
         this.contactIds = new HashSet<Long>();
-        this.conversations = new HashSet<Conversation>();
+        this.conversationIds = new HashSet<Long>();
     }
     
     public boolean addContact(long userId) {
@@ -39,14 +39,14 @@ public class User implements Serializable{
     public boolean isContact(long userId) {
         return this.contactIds.contains(userId);
     }
-    public boolean addConversations(Conversation convo) {
-        return this.conversations.add(convo);
+    public boolean addConversations(long convId) {
+        return this.conversationIds.add(convId);
     }
-    public boolean removeConversation(Conversation convo) {
-        return this.conversations.remove(convo);
+    public boolean removeConversation(Long convId) {
+        return this.conversationIds.remove(convId);
     }
-    public boolean isConversation(Conversation convo) {
-        return this.conversations.contains(convo);
+    public boolean isConversation(Long convId) {
+        return this.conversationIds.contains(convId);
     }
 
     public long getNum() {
@@ -79,6 +79,22 @@ public class User implements Serializable{
     public void setContacts(HashSet<Long> contacts) {
         this.contactIds = contacts;
     }
+    public HashSet<Long> getContactIds() {
+        return contactIds;
+    }
+    public void setContactIds(HashSet<Long> contactIds) {
+        this.contactIds = contactIds;
+    }
+    public HashSet<Long> getConversationIds() {
+        return conversationIds;
+    }
+    public void setConversationIds(HashSet<Long> conversationIds) {
+        this.conversationIds = conversationIds;
+    }
     
-    
+    public String toString() {
+        return "USER - id : " + num + " ; login : " + login + " ; color : " + color
+                + " ; contacts : " + contactIds
+                + " ; conversations : " + conversationIds;
+    }
 }

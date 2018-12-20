@@ -57,4 +57,10 @@ class Message {
         this.convId = convId;
     }
     
+    public String toString() { 
+        return "MESSAGE - id conv : " + convId + " ; date : " + date
+                + " ; content : \"" + content + "\" ; filePath : " + filePath
+                + " ; author : " + author;
+    }
+    
 }
