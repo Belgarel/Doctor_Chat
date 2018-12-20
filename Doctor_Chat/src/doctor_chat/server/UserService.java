@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class UserService {
     private static UserService instance = null;
     
-    public HashSet<User> findUsers(HashSet<Long> userIds) {
+    public HashSet<User> findUsersFromIds(HashSet<Long> userIds) {
         HashSet<User> ret = new HashSet<User>();
         for (Long id : userIds) {
             try {
@@ -99,8 +99,9 @@ public class UserService {
         ret.setNum(Long.valueOf(results.getNString("NO_UTILISATEUR")));
         ret.setLogin(results.getNString("LOGIN"));
         ret.setPassword(results.getNString("PASSWORD"));
+        ret.setContactIds(ContactService.instance().findContactIdsFromUser(ret));
         
-        //TODO: contacts, conversations (contactService)
+        //TODO: conversations (contactService)
         
         return ret;
     }

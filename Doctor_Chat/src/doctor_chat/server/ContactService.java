@@ -22,10 +22,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class ContactService {
     private static ContactService instance = null;
     
-    public HashSet<Long> findContacts(User user) {
-        return findContacts(user.getNum());
+    public HashSet<Long> findContactIdsFromUser(User user) {
+        return findContactIdsFromUserId(user.getNum());
     }
-    public HashSet<Long> findContacts(long userId) {
+    public HashSet<Long> findContactIdsFromUserId(long userId) {
         HashSet<Long> ret =  new HashSet<Long>();
         Statement request = null;
         ResultSet results = null;
