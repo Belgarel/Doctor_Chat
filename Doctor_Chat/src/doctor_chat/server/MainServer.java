@@ -19,7 +19,16 @@ import java.util.logging.Logger;
 public class MainServer {
     public static void main(String[] args) {
         try {
-            System.out.println(ConversationService.instance().findConversation(1));
+            System.out.println("USER 2 ------------------------- \n"
+            + UserService.instance().findUser((long)2));
+            System.out.println("CONVO 2 ------------------------ \n"
+            + ConversationService.instance().toConversation((long)2));
+            System.out.println("------------------\nAdding\n------------------");
+            ConversationService.instance().addMemberToConversation(2, 2);
+            System.out.println("USER 2 ------------------------- \n"
+            + UserService.instance().findUser((long)2));
+            System.out.println("CONVO 2 ------------------------ \n"
+            + ConversationService.instance().toConversation((long)2));
         } catch (NotFoundException ex) {
             System.out.println("Not found");
         }

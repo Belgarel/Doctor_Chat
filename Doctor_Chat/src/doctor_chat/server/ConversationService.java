@@ -143,18 +143,37 @@ public class ConversationService {
     }
     public void deleteConversation(long conversationId) {
         throw new NotImplementedException();
+        //TODO : delete in the conversation table
+        //TODO : delete all participations in the conversation
+        //TODO : delete all messages of the conversation
     }
     
     public void addMemberToConversation(long conversationId, long userId) {
-        throw new NotImplementedException();
+        /*there is no need to check that the user is not already in the conversation.
+        If they are, an SQL Exception will be thrown/caught,
+        resulting in the function doing nothing.
+        */
+        Statement update = null;
+        String sql = "insert into DRC_PARTICIPE (NO_UTILISATEUR, NO_CONVERSATION) values ("
+                + userId + ", " + conversationId + ")";
+        try {
+            update = DBConnection.instance().getConnection().createStatement();
+            update.executeUpdate(sql);
+            
+        } catch (SQLException ex) {
+            System.out.println("ConversationService > addMemberToConversation : Exception SQL "
+                    + ex.getMessage());
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (update != null)
+                    update.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     public void removeMemberFromConversation(long conversationId, long userId) {
-        throw new NotImplementedException();
-    }
-    public void addMessageToConversation(long conversationId, long messId) {
-        throw new NotImplementedException();
-    }
-    public void removeMessageFromConversation(long conversationId, long messId) {
         throw new NotImplementedException();
     }
     
