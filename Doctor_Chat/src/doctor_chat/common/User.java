@@ -73,12 +73,6 @@ public class User implements Serializable{
     public void setColor(Color color) {
         this.color = color;
     }
-    public HashSet<Long> getContacts() {
-        return this.contactIds;
-    }
-    public void setContacts(HashSet<Long> contacts) {
-        this.contactIds = contacts;
-    }
     public HashSet<Long> getContactIds() {
         return contactIds;
     }
