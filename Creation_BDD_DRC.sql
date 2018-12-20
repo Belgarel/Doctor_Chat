@@ -49,46 +49,39 @@ alter table DRC_MESSAGE
    add constraint DRC_MESSAGE_NO_CONVERS_fk foreign key (NO_CONVERSATION)
       references DRC_CONVERSATION;
 
-/*Setting up the primary key for drc_utilisateur to auto increment*/
-create sequence drc_utilisateur_pk_seq start with 1;
-create or replace trigger drc_utilisateur_pk_autoincr
-before insert on drc_utilisateur for each row
-begin
-    select drc_utilisateur_pk_seq.nextval
-    into :new.no_utilisateur
-    from dual;
-end;
+ALTER TABLE drc_utilisateur ADD CONSTRAINT un_login UNIQUE (login);
 
-/*Inserting values into DRC_UTILISATEUR*/
-insert into drc_utilisateur (login, password)
-values ('test', '123');
-insert into drc_utilisateur (login, password)
-values ('victor hugo', '123');
-insert into drc_utilisateur (login, password)
-values ('gustave flaubert', '123');
-insert into drc_utilisateur (login, password)
-values ('jules verne', '123');
-insert into drc_utilisateur (login, password)
-values ('marcel proust', '123');
-insert into drc_utilisateur (login, password)
-values ('stanislas lem', '123');
+ALTER TABLE drc_contact
+RENAME COLUMN no_utilisateur_1 TO no_utilisateur;
 
-/*Inserting values into DRC_CONTACT*/
-insert into drc_contact
-values (1,6);
-insert into drc_contact
-values (2,6);
-insert into drc_contact
-values (3,6);
-insert into drc_contact
-values (4,6);
-insert into drc_contact
-values (5,6);
-insert into drc_contact
-values (1,2);
-insert into drc_contact
-values (3,2);
-insert into drc_contact
-values (4,2);
-insert into drc_contact
-values (5,2);
+ALTER TABLE drc_contact
+RENAME COLUMN no_utilisateur_2 TO no_contact;
+
+COMMIT;
+
+INSERT INTO drc_conversation VALUES (1);
+INSERT INTO drc_conversation VALUES (2);
+INSERT INTO drc_conversation VALUES (3);
+INSERT INTO drc_conversation VALUES (4);
+INSERT INTO drc_conversation VALUES (5);
+
+INSERT INTO drc_participe VALUES (1, 1);
+INSERT INTO drc_participe VALUES (1, 3);
+INSERT INTO drc_participe VALUES (1, 5);
+
+INSERT INTO drc_participe VALUES (2, 1);
+INSERT INTO drc_participe VALUES (2, 3);
+INSERT INTO drc_participe VALUES (2, 5);
+
+
+INSERT INTO drc_participe VALUES (3, 1);
+INSERT INTO drc_participe VALUES (5, 3);
+INSERT INTO drc_participe VALUES (6, 5);
+
+ALTER TABLE drc_message ADD message CLOB;
+
+INSERT INTO drc_message VALUES (1, 1, NULL, 'test message convers 1');
+INSERT INTO drc_message VALUES (2, 3, NULL, 'test message convers 2');
+INSERT INTO drc_message VALUES (3, 5, NULL, 'test message convers 3');
+
+COMMIT;
