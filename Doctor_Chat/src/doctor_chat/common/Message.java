@@ -5,6 +5,7 @@
  */
 package doctor_chat.common;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -41,6 +42,22 @@ public class Message {
 
     public Date getDate() {
         return date;
+    }
+    public String getDateDDMMYYY() {
+        String concatDate = "";
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        Integer n = cal.get(Calendar.DAY_OF_MONTH);
+        if (n < 10)
+            concatDate = concatDate.concat("0");
+        concatDate = concatDate.concat(n + "/");
+        n = cal.get(Calendar.MONTH) + 1;
+        if (n < 10)
+            concatDate = concatDate.concat("0");
+        concatDate = concatDate.concat(n + "/");
+        n = cal.get(Calendar.YEAR);
+        concatDate = concatDate.concat(n.toString());
+        return concatDate;
     }
 
     public void setDate(Date date) {

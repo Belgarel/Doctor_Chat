@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -26,7 +27,44 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class MessageService {
     private static MessageService instance = null;
     
+    public ArrayList<Message> findMessagesForConversation(Conversation conversation) {
+        ArrayList<Message> ret = new ArrayList<Message>();
+        Statement request = null;
+        ResultSet results = null;
+        String sql = "select * from drc_message where no_conversation = " + conversation.getId();
+        try {
+            request = DBConnection.instance().getConnection().createStatement();
+            results = request.executeQuery(sql);
+            
+            boolean next = true;
+            while (next)
+            {
+                try {
+                    ret.add(toMessage(results, conversation));
+                } catch (NotFoundException ex) {
+                    next = false;
+                }
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (results != null)
+                    results.close();
+                if (request != null)
+                    request.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return ret;
+    }
+    
     public Message toMessage(ResultSet results, Conversation conversation) throws SQLException, NotFoundException {
+        if (!results.next())
+            throw new NotFoundException();
+        
         Message ret = new Message();
         
         //first, retreive the conversation
@@ -57,6 +95,38 @@ public class MessageService {
         ret.setAuthor(author);
         
         return ret;
+    }
+    
+    public void createMessage(Message message) {
+        Statement update = null;
+        //filePath field
+        String concatFilePath = "'" + message.getFilePath() + "', '";
+        if ("'', '".equals(concatFilePath))
+            concatFilePath = "NULL, '";
+        //Date field
+        String concatDate = message.getDateDDMMYYY();
+        String sql = "insert into DRC_MESSAGE (NO_CONVERSATION, NOM_FICHIER, MESSAGE, DATEPOSTED, NO_AUTHOR) values ("
+                + message.getConversation().getId() + ", "
+                + concatFilePath
+                + message.getContent() + "', TO_DATE('"
+                + concatDate + "', 'DD/MM/YY'), "
+                + message.getAuthor().getNum() + ")"
+                ;
+ System.out.println(sql);
+        try {
+            update = DBConnection.instance().getConnection().createStatement();
+            update.executeUpdate(sql);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (update != null)
+                    update.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     
