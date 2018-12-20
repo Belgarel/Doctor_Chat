@@ -21,17 +21,6 @@ import java.util.logging.Logger;
 public class MainServer {
     public static void main(String[] args) throws NotFoundException {
         System.out.println(
-                MessageService.instance().findMessagesForConversation(
-                ConversationService.instance().toConversation(1)).get(0));
-        System.out.println(
-                MessageService.instance().findMessagesForConversation(
-                ConversationService.instance().toConversation(1)).get(0).getDateDDMMYYY());
-        Message mess = new Message();
-        mess.setAuthor(UserService.instance().findUser((long) 1));
-        mess.setDate(new Date());
-        mess.setContent("lol");
-        mess.setConversation(ConversationService.instance().toConversation(2));
-        mess.setFilePath("");
-        MessageService.instance().createMessage(mess);
+                ConversationService.instance().toConversation(1));
     }    
 }

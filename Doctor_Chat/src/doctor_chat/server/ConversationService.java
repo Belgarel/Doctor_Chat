@@ -78,6 +78,7 @@ public class ConversationService {
                 throw new NotFoundException();
             ret.setId(Long.valueOf(results.getNString("NO_CONVERSATION")));
             ret.setMembers(findMembers(ret.getId()));
+            ret.setMessages(MessageService.instance().findMessagesForConversation(ret));
             
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,9 +92,6 @@ public class ConversationService {
                 Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        //TODO: messages & members
-        
         return ret;
     }
     public ArrayList<Long> findMemberIds(long conversationId) {
