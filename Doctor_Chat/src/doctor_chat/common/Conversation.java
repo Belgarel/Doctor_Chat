@@ -67,7 +67,7 @@ public class Conversation {
         }
         String messagesString = "";
         for (Message message : this.messages) {
-            messagesString = messagesString.concat("\n|" + message);
+            messagesString = messagesString.concat("\n|messId : " + message.getId());
         }
         
         return "CONVERSATION - id : " + this.id + " ; members : " + membersString
