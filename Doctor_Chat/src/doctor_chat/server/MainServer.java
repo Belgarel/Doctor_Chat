@@ -19,8 +19,17 @@ import java.util.logging.Logger;
  * @author Home
  */
 public class MainServer {
-    public static void main(String[] args) throws NotFoundException {
-        System.out.println(
-                ConversationService.instance().toConversation(1));
+    public static void main(String[] args) {
+        
+        try {
+            Message mess = MessageService.instance().findMessagesbyId(4);
+            System.out.println(mess);
+            System.out.println("deletion");
+            MessageService.instance().delete(mess);
+            System.out.println("done");
+            mess = MessageService.instance().findMessagesbyId(4);
+        } catch (NotFoundException ex) {
+            System.out.println("success");
+        }
     }    
 }

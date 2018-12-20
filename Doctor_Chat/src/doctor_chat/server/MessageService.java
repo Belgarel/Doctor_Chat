@@ -60,6 +60,31 @@ public class MessageService {
         }
         return ret;
     }
+    public Message findMessagesbyId(long messId) throws NotFoundException {
+        Message ret = null;
+        Statement request = null;
+        ResultSet results = null;
+        String sql = "select * from drc_message where no_message = " + messId;
+        try {
+            request = DBConnection.instance().getConnection().createStatement();
+            results = request.executeQuery(sql);
+            
+            ret = toMessage(results, null);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (results != null)
+                    results.close();
+                if (request != null)
+                    request.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return ret;
+    }
     
     public Message toMessage(ResultSet results, Conversation conversation) throws SQLException, NotFoundException {
         if (!results.next())
@@ -112,7 +137,6 @@ public class MessageService {
                 + concatDate + "', 'DD/MM/YY'), "
                 + message.getAuthor().getNum() + ")"
                 ;
- System.out.println(sql);
         try {
             update = DBConnection.instance().getConnection().createStatement();
             update.executeUpdate(sql);
@@ -128,7 +152,29 @@ public class MessageService {
             }
         }
     }
-    
+    public void delete(Message mess) {
+        delete(mess.getId());
+    }
+    public void delete(long messId) {
+        Statement update = null;
+        String sql = "delete from DRC_MESSAGE where NO_MESSAGE = " + messId;
+        try {
+            update = DBConnection.instance().getConnection().createStatement();
+            update.executeUpdate(sql);
+            
+        } catch (SQLException ex) {
+            System.out.println("MessageService > delete : Exception SQL "
+                    + ex.getMessage());
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (update != null)
+                    update.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     
     private MessageService() {}
     public static MessageService instance() {
