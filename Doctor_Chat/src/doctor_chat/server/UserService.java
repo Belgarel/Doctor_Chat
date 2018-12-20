@@ -100,8 +100,7 @@ public class UserService {
         ret.setLogin(results.getNString("LOGIN"));
         ret.setPassword(results.getNString("PASSWORD"));
         ret.setContactIds(ContactService.instance().findContactIdsFromUser(ret));
-        
-        //TODO: conversations (contactService)
+        ret.setConversationIds(ConversationService.instance().findUsersConversationIds(ret));
         
         return ret;
     }

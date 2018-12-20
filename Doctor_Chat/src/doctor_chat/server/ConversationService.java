@@ -24,14 +24,14 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class ConversationService {
     private static ConversationService instance = null;
     
-    public HashSet<Long> findConversations(User user) {
-        return findConversations(user.getNum());
+    public HashSet<Conversation> findUsersConversations(User user) {
+        return findConversationsFromIds(findUsersConversationIds(user));
     }
-    public HashSet<Long> findConversations(long userId) {
+    public HashSet<Long> findUsersConversationIds(User user) {
         HashSet<Long> ret =  new HashSet<Long>();
         Statement request = null;
         ResultSet results = null;
-        String sql = "select * from drc_participe where no_utilisateur = " + userId;
+        String sql = "select * from drc_participe where no_utilisateur = " + user.getNum();
         try {
             request = DBConnection.instance().getConnection().createStatement();
             results = request.executeQuery(sql);
@@ -54,7 +54,18 @@ public class ConversationService {
         }
         return ret;
     }
-    public Conversation findConversation(long conversationId) throws NotFoundException {
+    public HashSet<Conversation> findConversationsFromIds (HashSet<Long> convIds) {
+        HashSet<Conversation> ret = new HashSet<Conversation>();
+        for (Long convId : convIds) {
+            try {
+                ret.add(toConversation(convId));
+            } catch (NotFoundException ex) {
+                System.out.println("User not found: " + ex.getMessage());
+            }
+        }
+        return ret;
+    }
+    public Conversation toConversation(long conversationId) throws NotFoundException {
         Conversation ret = new Conversation();
         Statement request = null;
         ResultSet results = null;
