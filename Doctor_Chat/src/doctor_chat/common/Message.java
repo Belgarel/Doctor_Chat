@@ -5,6 +5,7 @@
  */
 package doctor_chat.common;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ import java.util.Date;
  *
  * @author Home
  */
-public class Message {
+public class Message implements Serializable {
 
     private long id;
     private Date date;
