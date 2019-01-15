@@ -5,62 +5,93 @@
  */
 package doctor_chat.common;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
  *
  * @author Home
  */
-class Message {
-    private User author;
+public class Message {
+
+    private long id;
     private Date date;
     private String content;
     private String filePath;
-    private long convId;
+    private User author;
+    private Conversation conversation;
 
-    public Message(User author, Date date, String content, String filePath, long convId) {
-        this.author = author;
-        this.date = date;
-        this.content = content;
-        this.filePath = filePath;
-        this.convId = convId;
+    public Message() {
     }
-    
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public User getAuthor() {
         return author;
     }
+
     public void setAuthor(User author) {
         this.author = author;
     }
+
     public Date getDate() {
         return date;
     }
+    public String getDateDDMMYYY() {
+        String concatDate = "";
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        Integer n = cal.get(Calendar.DAY_OF_MONTH);
+        if (n < 10)
+            concatDate = concatDate.concat("0");
+        concatDate = concatDate.concat(n + "/");
+        n = cal.get(Calendar.MONTH) + 1;
+        if (n < 10)
+            concatDate = concatDate.concat("0");
+        concatDate = concatDate.concat(n + "/");
+        n = cal.get(Calendar.YEAR);
+        concatDate = concatDate.concat(n.toString());
+        return concatDate;
+    }
+
     public void setDate(Date date) {
         this.date = date;
     }
+
     public String getContent() {
         return content;
     }
+
     public void setContent(String content) {
         this.content = content;
     }
+
     public String getFilePath() {
         return filePath;
     }
+
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
-    public long getConvId() {
-        return convId;
+
+    public Conversation getConversation() {
+        return conversation;
     }
-    public void setConvId(long convId) {
-        this.convId = convId;
+
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
     }
-    
-    public String toString() { 
-        return "MESSAGE - id conv : " + convId + " ; date : " + date
+
+    public String toString() {
+        return "MESSAGE - id : " + id + ";  conv : " + conversation + "\n|date : " + date
                 + " ; content : \"" + content + "\" ; filePath : " + filePath
-                + " ; author : " + author;
+                + "\n|author : " + author;
     }
-    
+
 }
