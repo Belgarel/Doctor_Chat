@@ -66,7 +66,7 @@ public class ViewController {
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
-                    behavior = new ViewBehaviorLogin(loader.getController());
+                    behavior = new ViewBehaviorChat(loader.getController());
                 } catch (IOException ex) {
                     Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
                 }
