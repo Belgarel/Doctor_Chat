@@ -24,7 +24,7 @@ public class ViewBehaviorLogin implements ViewBehavior {
         ViewController.instance().setAccount(mess.getAccount());
         ViewController.instance().setContacts(mess.getContacts());
         ViewController.instance().setConversations(mess.getConversation());
-        ViewController.instance().login(); //TODO: chat()
+        ViewController.instance().chat();
     }
 
     @Override

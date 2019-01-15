@@ -32,6 +32,7 @@ public class ViewController {
     
     private ViewController() {
         login();
+        //chat();
     }
     
     public void login() {
@@ -53,6 +54,24 @@ public class ViewController {
             }});
     }
     
+      public void chat() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FXMLLoader loader = new FXMLLoader(
+                            getClass().getResource(
+                            "ChatView.fxml"));
+                    Parent root = loader.load();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                    behavior = new ViewBehaviorLogin(loader.getController());
+                } catch (IOException ex) {
+                    Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }});
+    }
     public User getAccount() {
         return account;
     }
@@ -78,6 +97,8 @@ public class ViewController {
     public void setBehavior(ViewBehavior behavior) {
         this.behavior = behavior;
     }
+    
+    
     
     public static void setStage(Stage s) { stage = s; }
     
