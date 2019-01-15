@@ -24,7 +24,8 @@ public class ViewController {
     private Object currentView = null;
     
     private ViewController() {
-        login();
+        //login();
+        chat();
     }
     
     public void login() {
@@ -37,6 +38,18 @@ public class ViewController {
             Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+      public void chat() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("ChatView.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     
     public static void setStage(Stage s) { stage = s; }
