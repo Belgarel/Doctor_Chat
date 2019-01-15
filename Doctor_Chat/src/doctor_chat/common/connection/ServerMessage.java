@@ -5,10 +5,12 @@
  */
 package doctor_chat.common.connection;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Home
  */
-public class ServerMessage {
+public class ServerMessage implements Serializable {
     
 }

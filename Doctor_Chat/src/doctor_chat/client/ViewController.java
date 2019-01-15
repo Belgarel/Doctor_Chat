@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,18 +35,22 @@ public class ViewController {
     }
     
     public void login() {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(
-                    "ConnectionView.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            behavior = new ViewBehaviorLogin(loader.getController());
-        } catch (IOException ex) {
-            Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FXMLLoader loader = new FXMLLoader(
+                            getClass().getResource(
+                            "ConnectionView.fxml"));
+                    Parent root = loader.load();
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                    behavior = new ViewBehaviorLogin(loader.getController());
+                } catch (IOException ex) {
+                    Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }});
     }
     
     public User getAccount() {

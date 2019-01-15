@@ -154,20 +154,20 @@ System.out.println("Not listening to client " + this.id + " anymore.");
     private void identify(AuthentificationRequest message) {
         try {
             account = UserService.instance().findUser(message.getLogin(), message.getPassword());
+            //if the authentification was successfull
+            //retreive the list of contacts
+            HashSet<User> contacts = UserService
+                    .instance().findUsersFromIds(account.getContactIds());
+            //retreive the list of conversations
+            HashSet<Conversation> conversation = ConversationService
+                    .instance().findConversationsFromIds(account.getConversationIds());
+            //send it to the server
+            sendServerMessage(new AuthentificationOK(account, contacts, conversation));
         } catch (NotFoundException ex) {
             sendServerMessage(new AuthentificationFail("Utilisateur inexistant."));
         } catch (AuthentificationFailedException ex) {
             sendServerMessage(new AuthentificationFail("Mauvais mot de passe."));
         }
-        //if the authentification was successfull
-        //retreive the list of contacts
-        HashSet<User> contacts = UserService
-                .instance().findUsersFromIds(account.getContactIds());
-        //retreive the list of conversations
-        HashSet<Conversation> conversation = ConversationService
-                .instance().findConversationsFromIds(account.getConversationIds());
-        //send it to the server
-        sendServerMessage(new AuthentificationOK(account, contacts, conversation));
     }
     
     

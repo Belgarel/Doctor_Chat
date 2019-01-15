@@ -5,11 +5,13 @@
  */
 package doctor_chat.common.connection;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Home
  */
-public class ClientMessage {
+public class ClientMessage implements Serializable {
     protected String sender;
     
     public ClientMessage() {

@@ -22,11 +22,7 @@ import java.util.logging.Logger;
 public class MainServer {
     public static void main(String[] args) {
         try {
-            Server serv = new Server(8043);
-            Connection co = new Connection(serv);
-            
-            
-            
+            Server serv = new Server(8080);
             
             
         } catch (IOException ex) {

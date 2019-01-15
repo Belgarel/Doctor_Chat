@@ -59,6 +59,7 @@ public class Client {
             out.writeObject(mess);
             out.flush();
         } catch (IOException ex) {
+            System.out.println("Raté !");
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

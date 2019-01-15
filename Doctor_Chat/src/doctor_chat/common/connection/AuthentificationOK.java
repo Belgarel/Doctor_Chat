@@ -7,13 +7,14 @@ package doctor_chat.common.connection;
 
 import doctor_chat.common.Conversation;
 import doctor_chat.common.User;
+import java.io.Serializable;
 import java.util.HashSet;
 
 /**
  *
  * @author Home
  */
-public class AuthentificationOK extends ServerMessage {
+public class AuthentificationOK extends ServerMessage implements Serializable {
     
     private User account;
     private HashSet<User> contacts;

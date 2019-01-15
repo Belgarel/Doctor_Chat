@@ -5,13 +5,14 @@
  */
 package doctor_chat.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Home
  */
-public class Conversation {
+public class Conversation implements Serializable {
     private long id;
     private ArrayList<User> members;
     private ArrayList<Message> messages;

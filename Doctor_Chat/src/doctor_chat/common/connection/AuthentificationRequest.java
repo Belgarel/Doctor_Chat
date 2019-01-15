@@ -5,11 +5,13 @@
  */
 package doctor_chat.common.connection;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Home
  */
-public class AuthentificationRequest extends ClientMessage {
+public class AuthentificationRequest extends ClientMessage implements Serializable {
     private String login;
     private String password;
 

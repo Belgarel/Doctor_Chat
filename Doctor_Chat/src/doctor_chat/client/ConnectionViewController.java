@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,7 +48,7 @@ public class ConnectionViewController implements Initializable {
     private void connection(ActionEvent event) throws ConnectionNotInitializedException {
         String[] server = fieldServer.getText().split(":");
         boolean serverError = (server.length != 2);
-        int port = Integer.valueOf(server[1]);
+        int port = serverError ? 0 : Integer.valueOf(server[1]);
         if (serverError)
             setError("Le champ Server doit être de la forme : \"localhost:9043\"");
         else if ("".equals(fieldId.getText()))
@@ -60,7 +61,6 @@ public class ConnectionViewController implements Initializable {
                 Client.instance().sendMessage(new AuthentificationRequest(
                         fieldId.getText(),
                         fieldMdp.getText()));
-                
             } catch (IOException ex) {
                 setError("La connection n'a pas pu être établie.");
             }
@@ -75,7 +75,12 @@ public class ConnectionViewController implements Initializable {
         ;
     }
     public void setError(String err) {
-        this.labelError.setText(err);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                labelError.setText(err);
+            }
+        });
     }
     
     

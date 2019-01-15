@@ -5,11 +5,13 @@
  */
 package doctor_chat.common.connection;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Home
  */
-public class AuthentificationFail extends ServerMessage {
+public class AuthentificationFail extends ServerMessage implements Serializable {
     
     private String message;
 
