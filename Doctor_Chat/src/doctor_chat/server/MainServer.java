@@ -9,6 +9,9 @@ import doctor_chat.common.NotFoundException;
 import doctor_chat.common.AuthentificationFailedException;
 import doctor_chat.common.ExistingUserException;
 import doctor_chat.common.User;
+import doctor_chat.server.connection.Connection;
+import doctor_chat.server.connection.Server;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,18 +22,15 @@ import java.util.logging.Logger;
 public class MainServer {
     public static void main(String[] args) {
         try {
-            System.out.println("USER 2 ------------------------- \n"
-            + UserService.instance().findUser((long)2));
-            System.out.println("CONVO 2 ------------------------ \n"
-            + ConversationService.instance().toConversation((long)2));
-            System.out.println("------------------\nRemoving\n------------------");
-            ConversationService.instance().removeMemberFromConversation(2, 2);
-            System.out.println("USER 2 ------------------------- \n"
-            + UserService.instance().findUser((long)2));
-            System.out.println("CONVO 2 ------------------------ \n"
-            + ConversationService.instance().toConversation((long)2));
-        } catch (NotFoundException ex) {
-            System.out.println("Not found");
+            Server serv = new Server(8043);
+            Connection co = new Connection(serv);
+            
+            
+            
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(MainServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
 }
