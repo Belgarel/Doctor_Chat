@@ -7,6 +7,7 @@ package doctor_chat.common;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  *
@@ -14,14 +15,14 @@ import java.util.ArrayList;
  */
 public class Conversation implements Serializable {
     private long id;
-    private ArrayList<User> members;
-    private ArrayList<Message> messages;
+    private HashSet<User> members;
+    private HashSet<Message> messages;
 
     public Conversation() {
-        this.members = new ArrayList<User>();
-        this.messages = new ArrayList<Message>();
+        this.members = new HashSet<User>();
+        this.messages = new HashSet<Message>();
     }
-    public Conversation(ArrayList<User> members, ArrayList<Message> messages) {
+    public Conversation(HashSet<User> members, HashSet<Message> messages) {
         this.members = members;
         this.messages = messages;
     }
@@ -48,16 +49,16 @@ public class Conversation implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
-    public ArrayList<Message> getMessages() {
+    public HashSet<Message> getMessages() {
         return messages;
     }
-    public void setMessages(ArrayList<Message> messages) {
+    public void setMessages(HashSet<Message> messages) {
         this.messages = messages;
     }
-    public ArrayList<User> getMembers() {
+    public HashSet<User> getMembers() {
         return members;
     }
-    public void setMembers(ArrayList<User> members) {
+    public void setMembers(HashSet<User> members) {
         this.members = members;
     }
     

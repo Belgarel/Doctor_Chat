@@ -11,7 +11,7 @@ import doctor_chat.common.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -94,8 +94,8 @@ public class ConversationService {
         }
         return ret;
     }
-    public ArrayList<Long> findMemberIds(long conversationId) {
-        ArrayList<Long> ret =  new ArrayList<Long>();
+    public HashSet<Long> findMemberIds(long conversationId) {
+        HashSet<Long> ret =  new HashSet<Long>();
         Statement request = null;
         ResultSet results = null;
         String sql = "select * from drc_participe where no_conversation = " + conversationId;
@@ -121,9 +121,9 @@ public class ConversationService {
         }
         return ret;
     }
-    public ArrayList<User> findMembers(long conversationId) {
-        ArrayList<User> ret = new ArrayList<User>();
-        ArrayList<Long> userIds = findMemberIds(conversationId);
+    public HashSet<User> findMembers(long conversationId) {
+        HashSet<User> ret = new HashSet<User>();
+        HashSet<Long> userIds = findMemberIds(conversationId);
         for (long uid : userIds)
             try {
                 ret.add(UserService.instance().findUser(uid));

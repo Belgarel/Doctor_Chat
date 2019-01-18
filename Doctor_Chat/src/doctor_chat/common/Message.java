@@ -28,15 +28,12 @@ public class Message implements Serializable {
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
-
     public User getAuthor() {
         return author;
     }
-
     public void setAuthor(User author) {
         this.author = author;
     }
@@ -60,34 +57,28 @@ public class Message implements Serializable {
         concatDate = concatDate.concat(n.toString());
         return concatDate;
     }
-
     public void setDate(Date date) {
         this.date = date;
     }
-
     public String getContent() {
         return content;
     }
-
     public void setContent(String content) {
         this.content = content;
     }
-
     public String getFilePath() {
         return filePath;
     }
-
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
-
     public Conversation getConversation() {
         return conversation;
     }
-
     public void setConversation(Conversation conversation) {
         this.conversation = conversation;
     }
+    
 
     public String toString() {
         return "MESSAGE - id : " + id + ";  conv : " + conversation + "\n|date : " + date

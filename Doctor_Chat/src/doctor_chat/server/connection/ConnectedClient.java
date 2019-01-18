@@ -18,8 +18,9 @@ import doctor_chat.common.connection.AuthentificationFail;
 import doctor_chat.common.connection.AuthentificationOK;
 import doctor_chat.common.connection.AuthentificationRequest;
 import doctor_chat.common.connection.ClientMessage;
+import doctor_chat.common.connection.ConversationCreateRequest;
+import doctor_chat.common.connection.ConversationInvite;
 import doctor_chat.common.connection.ServerMessage;
-import doctor_chat.server.ContactService;
 import doctor_chat.server.ConversationService;
 import doctor_chat.server.UserService;
 import java.io.IOException;
@@ -27,7 +28,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,6 +79,7 @@ public class ConnectedClient implements Runnable {
         try {
             this.out.writeObject(mess);
             this.out.flush();
+            System.out.println("Envoi du message au client N°" + id + "\n" + mess + "\n-------------");
             return mess;
         } catch (IOException ex) {
             Logger.getLogger(ConnectedClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,6 +93,12 @@ public class ConnectedClient implements Runnable {
      */
     public int getId() {
         return id;
+    }
+    public User getAccount() {
+        return account;
+    }
+    public void setAccount(User account) {
+        this.account = account;
     }
     
     /**
@@ -145,6 +152,13 @@ System.out.println("Not listening to client " + this.id + " anymore.");
         //Depending of the type of the message, an action is decided
         if (mess instanceof AuthentificationRequest) //authentification
             identify((AuthentificationRequest) mess);
+        else if (mess instanceof ConversationCreateRequest)
+        {
+            Conversation conv = ((ConversationCreateRequest) mess).getConversation();
+            ConversationService.instance().createConversation(conv);
+            ConversationInvite reply = new ConversationInvite(conv);
+            server.sendMessageToClients(reply, reply.getConversation().getMembers());
+        }
     }
     /**
      * determines wether and authentification request is valid or invalid,

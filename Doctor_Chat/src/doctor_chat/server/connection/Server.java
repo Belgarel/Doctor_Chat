@@ -10,8 +10,12 @@ package doctor_chat.server.connection;
  * @author Home
  */
 
+import doctor_chat.common.User;
+import doctor_chat.common.connection.ServerMessage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 public class Server {
     /**
@@ -56,6 +60,26 @@ System.out.println("Le client " + newClient.getId() + " vient de se connecter.")
         discClient.closeClient();
 System.out.println("Le client " + discClient.getId() + " vient de se déconnecter.");
         return discClient;
+    }
+    
+    public void sendMessageToClients(ServerMessage mess, HashSet<User> users) {
+        users = (HashSet<User>) users.clone();
+        synchronized (clients) { //coûteux, mais évite que le message soit envoyé à un client qui n'existe plus !
+            for (User user : users) {
+                Iterator<ConnectedClient> iterator = clients.iterator();
+                boolean clientFound = false;
+                ConnectedClient client = null;
+                while (!clientFound && iterator.hasNext()) {
+                    client = iterator.next();
+                    clientFound = client.getAccount().getNum() == user.getNum();
+                }
+                if (clientFound)
+                    client.sendServerMessage(mess);
+                else
+                    System.out.println("Error: connection.Server > sendMessageToClients" +
+                            "Client was not found for user " + client.getAccount());
+            }
+        }
     }
     
 
