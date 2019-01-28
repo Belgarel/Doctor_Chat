@@ -133,8 +133,42 @@ public class ConversationService {
         return ret;
     }
     
-    public void createConversation(Conversation conv) {
-        throw new NotImplementedException();
+    public synchronized Conversation createConversation() {
+        /*this function is synchronized so that one conversation can be created at the time
+          so that the id of the newly created conversation can be retrieved. */
+        Statement select;
+        Statement update = null;
+        String sql = "select max(id) from DRC_CONVERSATION";
+        int maxId = -1;
+        try {
+            //retreiving the id of the next conversation
+            select = DBConnection.instance().getConnection().createStatement();
+            ResultSet rs = select.executeQuery(sql);
+            if (rs.first()) //if table is not empty
+                maxId = rs.getInt(1) + 1;
+            else //if the table is empty
+                maxId = 1;
+            
+            sql = "insert into DRC_CONVERSATION  values (" + maxId + ")";
+            update = DBConnection.instance().getConnection().createStatement();
+            update.executeUpdate(sql);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (update != null)
+                    update.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        if (maxId == -1) //in case the function was not executed properly
+            return null;
+        Conversation ret = new Conversation();
+        ret.setId(maxId);
+        return ret;
     }
     public void deleteConversation(Conversation conv) {
         deleteConversation(conv.getId());
