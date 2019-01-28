@@ -175,6 +175,26 @@ public class MessageService {
             }
         }
     }
+    public void deleteByConversationId(long convId) {
+        Statement update = null;
+        String sql = "delete from DRC_MESSAGE where NO_CONVERSATION = " + convId;
+        try {
+            update = DBConnection.instance().getConnection().createStatement();
+            update.executeUpdate(sql);
+            
+        } catch (SQLException ex) {
+            System.out.println("MessageService > delete : Exception SQL "
+                    + ex.getMessage());
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (update != null)
+                    update.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     
     private MessageService() {}
     public static MessageService instance() {

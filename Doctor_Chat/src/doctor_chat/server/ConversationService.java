@@ -132,11 +132,14 @@ public class ConversationService {
             }
         return ret;
     }
-    
+    /**
+     * Creates an empty conversation without members or messages.
+     * @return 
+     */
     public synchronized Conversation createConversation() {
         /*this function is synchronized so that one conversation can be created at the time
           so that the id of the newly created conversation can be retrieved. */
-        Statement select;
+        Statement select = null;
         Statement update = null;
         String sql = "select max(id) from DRC_CONVERSATION";
         int maxId = -1;
@@ -159,6 +162,8 @@ public class ConversationService {
             try {
                 if (update != null)
                     update.close();
+                if (select != null)
+                    select.close();
             } catch (SQLException ex) {
                 Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -174,10 +179,35 @@ public class ConversationService {
         deleteConversation(conv.getId());
     }
     public void deleteConversation(long conversationId) {
-        throw new NotImplementedException();
-        //TODO : delete in the conversation table
-        //TODO : delete all participations in the conversation
-        //TODO : delete all messages of the conversation
+        //delete all messages of the conversation
+        MessageService.instance().deleteByConversationId(conversationId);
+        
+        Statement updateParticipe = null;
+        Statement updateConversation = null;
+        String sql = "delete from DRC_PARTICIPE where NO_CONVERSATION = " + conversationId;
+        try {
+            //delete all participations in the conversation
+            updateParticipe = DBConnection.instance().getConnection().createStatement();
+            updateParticipe.executeUpdate(sql);
+            
+            //delete in the conversation table
+            sql = "delete from DRC_CONVERSATION where NO_CONVERSATION = " + conversationId;
+            updateConversation = DBConnection.instance().getConnection().createStatement();
+            updateConversation.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.out.println("ConversationService > removeMemberFromConversation : Exception SQL "
+                    + ex.getMessage());
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (updateParticipe != null)
+                    updateParticipe.close();
+                if (updateConversation != null)
+                    updateConversation.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     public void addMemberToConversation(long conversationId, long userId) {
