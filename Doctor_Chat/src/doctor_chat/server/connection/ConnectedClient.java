@@ -21,10 +21,13 @@ import doctor_chat.common.connection.AuthentificationRequest;
 import doctor_chat.common.connection.ClientMessage;
 import doctor_chat.common.connection.ConversationCreateRequest;
 import doctor_chat.common.connection.ConversationInvite;
+import doctor_chat.common.connection.MessagePost;
+import doctor_chat.common.connection.MessagePosted;
 import doctor_chat.common.connection.ServerMessage;
 import doctor_chat.common.connection.SignUpFail;
 import doctor_chat.common.connection.SignUpRequest;
 import doctor_chat.server.ConversationService;
+import doctor_chat.server.MessageService;
 import doctor_chat.server.UserService;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -159,6 +162,8 @@ System.out.println("Not listening to client " + this.id + " anymore.");
             signUp((SignUpRequest) mess);
         else if (mess instanceof ConversationCreateRequest)
             createConv((ConversationCreateRequest) mess);
+        else if (mess instanceof MessagePost)
+            postMessage((MessagePost) mess);
     }
     /**
      * determines wether the sign up request is valid or invalid
@@ -197,16 +202,26 @@ System.out.println("Not listening to client " + this.id + " anymore.");
         }
     }
     public void createConv(ConversationCreateRequest message) {
-            Conversation conversation = ((ConversationCreateRequest) message).getConversation();
-            //creating the conversation (new id determined by the database)
-            conversation.setId(ConversationService.instance().createConversation().getId());
-            //adding the requested members to the newly created conversation
-            for (User member : conversation.getMembers())
-                ConversationService.instance().addMemberToConversation(conversation.getId(), member.getNum());
-            
-            //then, send an invitation to all members for synchronization purposes.
-            ConversationInvite reply = new ConversationInvite(conversation);
-            server.sendMessageToClients(reply, reply.getConversation().getMembers());
+        Conversation conversation = ((ConversationCreateRequest) message).getConversation();
+        //creating the conversation (new id determined by the database)
+        conversation.setId(ConversationService.instance().createConversation().getId());
+        //adding the requested members to the newly created conversation
+        for (User member : conversation.getMembers())
+            ConversationService.instance().addMemberToConversation(conversation.getId(), member.getNum());
+
+        //then, send an invitation to all members for synchronization purposes.
+        ConversationInvite reply = new ConversationInvite(conversation);
+        server.sendMessageToClients(reply, reply.getConversation().getMembers());
+    }
+    private void postMessage(MessagePost message) {
+        //Database
+        MessageService.instance().createMessage(message.getMessage());
+        
+        //Notification of the members of the conversation
+        MessagePosted reply = new MessagePosted(message.getMessage());
+        HashSet<User> clientsToNotify = message.getMessage().getConversation().getMembers();
+        clientsToNotify.remove(message.getMessage().getAuthor()); //do not notify the client who posted the message
+        server.sendMessageToClients(reply, clientsToNotify);
     }
     
 }

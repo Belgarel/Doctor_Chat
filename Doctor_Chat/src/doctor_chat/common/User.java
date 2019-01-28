@@ -13,7 +13,7 @@ import java.util.HashSet;
  *
  * @author Home
  */
-public class User implements Serializable{
+public class User implements Serializable, Comparable {
     private long num;
     private String login;
     private String password;
@@ -86,6 +86,21 @@ public class User implements Serializable{
         this.conversationIds = conversationIds;
     }
     
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof User))
+            throw new IllegalArgumentException();
+        User other = (User) o;
+        return  this.getNum() == other.getNum();
+    }
+    @Override
+    public int compareTo(Object o) {
+        if (!(o instanceof User))
+            throw new IllegalArgumentException();
+        User other = (User) o;
+        return ((Long) this.getNum()).compareTo((Long) other.getNum());
+    }
+    @Override
     public String toString() {
         return "USER - id : " + num + " ; login : " + login + " ; color : " + color
                 + " ; contacts : " + contactIds
