@@ -158,12 +158,7 @@ System.out.println("Not listening to client " + this.id + " anymore.");
         else if (mess instanceof SignUpRequest)
             signUp((SignUpRequest) mess);
         else if (mess instanceof ConversationCreateRequest)
-        {
-            Conversation conv = ((ConversationCreateRequest) mess).getConversation();
-            ConversationService.instance().createConversation(conv);
-            ConversationInvite reply = new ConversationInvite(conv);
-            server.sendMessageToClients(reply, reply.getConversation().getMembers());
-        }
+            createConv((ConversationCreateRequest) mess);
     }
     /**
      * determines wether the sign up request is valid or invalid
@@ -201,7 +196,18 @@ System.out.println("Not listening to client " + this.id + " anymore.");
             sendServerMessage(new AuthentificationFail("Mauvais mot de passe."));
         }
     }
-    
+    public void createConv(ConversationCreateRequest message) {
+            Conversation conversation = ((ConversationCreateRequest) message).getConversation();
+            //creating the conversation (new id determined by the database)
+            conversation.setId(ConversationService.instance().createConversation().getId());
+            //adding the requested members to the newly created conversation
+            for (User member : conversation.getMembers())
+                ConversationService.instance().addMemberToConversation(conversation.getId(), member.getNum());
+            
+            //then, send an invitation to all members for synchronization purposes.
+            ConversationInvite reply = new ConversationInvite(conversation);
+            server.sendMessageToClients(reply, reply.getConversation().getMembers());
+    }
     
 }
 
