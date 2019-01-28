@@ -12,6 +12,7 @@ package doctor_chat.server.connection;
 
 import doctor_chat.common.AuthentificationFailedException;
 import doctor_chat.common.Conversation;
+import doctor_chat.common.ExistingUserException;
 import doctor_chat.common.NotFoundException;
 import doctor_chat.common.User;
 import doctor_chat.common.connection.AuthentificationFail;
@@ -21,6 +22,8 @@ import doctor_chat.common.connection.ClientMessage;
 import doctor_chat.common.connection.ConversationCreateRequest;
 import doctor_chat.common.connection.ConversationInvite;
 import doctor_chat.common.connection.ServerMessage;
+import doctor_chat.common.connection.SignUpFail;
+import doctor_chat.common.connection.SignUpRequest;
 import doctor_chat.server.ConversationService;
 import doctor_chat.server.UserService;
 import java.io.IOException;
@@ -152,12 +155,27 @@ System.out.println("Not listening to client " + this.id + " anymore.");
         //Depending of the type of the message, an action is decided
         if (mess instanceof AuthentificationRequest) //authentification
             identify((AuthentificationRequest) mess);
+        else if (mess instanceof SignUpRequest)
+            signUp((SignUpRequest) mess);
         else if (mess instanceof ConversationCreateRequest)
         {
             Conversation conv = ((ConversationCreateRequest) mess).getConversation();
             ConversationService.instance().createConversation(conv);
             ConversationInvite reply = new ConversationInvite(conv);
             server.sendMessageToClients(reply, reply.getConversation().getMembers());
+        }
+    }
+    /**
+     * determines wether the sign up request is valid or invalid
+     * @param message message received by the server
+     */
+    private void signUp(SignUpRequest message) {
+        try {
+            UserService.instance().createUser(message.getLogin(), message.getPassword());
+            //identification automatique.
+            identify(new AuthentificationRequest(message.getLogin(), message.getPassword()));
+        } catch (ExistingUserException ex) {
+            sendServerMessage(new SignUpFail("Login déjà utilisé."));
         }
     }
     /**

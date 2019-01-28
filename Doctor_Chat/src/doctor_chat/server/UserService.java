@@ -105,11 +105,11 @@ public class UserService {
         return ret;
     }
     
-    public void createUser(User user) throws ExistingUserException {
+    public void createUser(String login, String password) throws ExistingUserException {
         //first, check that the user does not exist
         User userFound = null;
         try {
-            userFound = findUser(user.getLogin());
+            userFound = findUser(login);
         } catch (NotFoundException ex) {
             //ignore
         }
@@ -118,7 +118,7 @@ public class UserService {
         //user creation
         Statement update = null;
         String sql = "insert into DRC_UTILISATEUR (LOGIN, PASSWORD) values ('"
-                + user.getLogin() + "', '" + user.getPassword() + "')";
+                + login + "', '" + password + "')";
         try {
             update = DBConnection.instance().getConnection().createStatement();
             update.executeUpdate(sql);
