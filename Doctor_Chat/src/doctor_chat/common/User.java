@@ -7,39 +7,46 @@ package doctor_chat.common;
 
 import java.awt.Color;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  *
  * @author Home
  */
-public class User implements Serializable{
+public class User implements Serializable, Comparable {
     private long num;
     private String login;
-    private String mdp;
+    private String password;
     private Color color;
-    private HashSet<Integer> contactIds;
+    private HashSet<Long> contactIds;
+    private HashSet<Long> conversationIds;
     
     public User() {
         this.num = -1;
         this.login = "";
-        this.mdp = "";
+        this.password = "";
         this.color = Color.BLACK;
-        this.contactIds = new HashSet<Integer>();
+        this.contactIds = new HashSet<Long>();
+        this.conversationIds = new HashSet<Long>();
     }
     
-    public boolean addContact(int userId) {
+    public boolean addContact(long userId) {
         return this.contactIds.add(userId);
     }
-    public boolean removeContact(int userId) {
+    public boolean removeContact(long userId) {
         return this.contactIds.remove(userId);
     }
-    public boolean isContact(int userId) {
+    public boolean isContact(long userId) {
         return this.contactIds.contains(userId);
+    }
+    public boolean addConversations(long convId) {
+        return this.conversationIds.add(convId);
+    }
+    public boolean removeConversation(Long convId) {
+        return this.conversationIds.remove(convId);
+    }
+    public boolean isConversation(Long convId) {
+        return this.conversationIds.contains(convId);
     }
 
     public long getNum() {
@@ -54,11 +61,11 @@ public class User implements Serializable{
     public void setLogin(String login) {
         this.login = login;
     }
-    public String getMdp() {
-        return mdp;
+    public String getPassword() {
+        return password;
     }
-    public void setMdp(String mdp) {
-        this.mdp = mdp;
+    public void setPassword(String password) {
+        this.password = password;
     }
     public Color getColor() {
         return color;
@@ -66,12 +73,37 @@ public class User implements Serializable{
     public void setColor(Color color) {
         this.color = color;
     }
-    public HashSet<Integer> getContacts() {
-        return this.contactIds;
+    public HashSet<Long> getContactIds() {
+        return contactIds;
     }
-    public void setContacts(HashSet<Integer> contacts) {
-        this.contactIds = contacts;
+    public void setContactIds(HashSet<Long> contactIds) {
+        this.contactIds = contactIds;
+    }
+    public HashSet<Long> getConversationIds() {
+        return conversationIds;
+    }
+    public void setConversationIds(HashSet<Long> conversationIds) {
+        this.conversationIds = conversationIds;
     }
     
-    
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof User))
+            throw new IllegalArgumentException();
+        User other = (User) o;
+        return  this.getNum() == other.getNum();
+    }
+    @Override
+    public int compareTo(Object o) {
+        if (!(o instanceof User))
+            throw new IllegalArgumentException();
+        User other = (User) o;
+        return ((Long) this.getNum()).compareTo((Long) other.getNum());
+    }
+    @Override
+    public String toString() {
+        return "USER - id : " + num + " ; login : " + login + " ; color : " + color
+                + " ; contacts : " + contactIds
+                + " ; conversations : " + conversationIds;
+    }
 }

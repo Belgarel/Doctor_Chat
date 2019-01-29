@@ -49,8 +49,36 @@ alter table DRC_MESSAGE
    add constraint DRC_MESSAGE_NO_CONVERS_fk foreign key (NO_CONVERSATION)
       references DRC_CONVERSATION;
 
-/*Setting up the primary key for drc_utilisateur to auto increment*/
-create sequence drc_utilisateur_pk_seq start with 1;
+ALTER TABLE drc_utilisateur ADD CONSTRAINT un_login UNIQUE (login);
+
+ALTER TABLE drc_contact
+RENAME COLUMN no_utilisateur_1 TO no_utilisateur;
+
+ALTER TABLE drc_contact
+RENAME COLUMN no_utilisateur_2 TO no_contact;
+
+COMMIT;
+
+/*Ajout de colonnes dans la table Message*/
+alter table drc_message add(
+    NO_AUTHOR   NUMBER  NOT NULL,
+    DATEPOSTED  DATE
+);
+alter table drc_message
+   add constraint DRC_MESSAGE_NO_AUTHOR_fk foreign key (NO_AUTHOR)
+      references DRC_UTILISATEUR;
+
+/*Autoincrémentation des messages*/
+CREATE SEQUENCE DRC_MESSAGE_PK_SEQ START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
+create or replace trigger drc_message_pk_autoincr
+before insert on drc_message for each row
+begin
+    select drc_message_pk_seq.nextval
+    into :new.no_message
+    from dual;
+end;
+/*Autoincrémentation des utilisateur*/
+CREATE SEQUENCE DRC_UTILISATEUR_PK_SEQ START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
 create or replace trigger drc_utilisateur_pk_autoincr
 before insert on drc_utilisateur for each row
 begin
@@ -59,36 +87,34 @@ begin
     from dual;
 end;
 
-/*Inserting values into DRC_UTILISATEUR*/
-insert into drc_utilisateur (login, password)
-values ('test', '123');
-insert into drc_utilisateur (login, password)
-values ('victor hugo', '123');
-insert into drc_utilisateur (login, password)
-values ('gustave flaubert', '123');
-insert into drc_utilisateur (login, password)
-values ('jules verne', '123');
-insert into drc_utilisateur (login, password)
-values ('marcel proust', '123');
-insert into drc_utilisateur (login, password)
-values ('stanislas lem', '123');
+/*Insertion de valeurs*/
 
-/*Inserting values into DRC_CONTACT*/
-insert into drc_contact
-values (1,6);
-insert into drc_contact
-values (2,6);
-insert into drc_contact
-values (3,6);
-insert into drc_contact
-values (4,6);
-insert into drc_contact
-values (5,6);
-insert into drc_contact
-values (1,2);
-insert into drc_contact
-values (3,2);
-insert into drc_contact
-values (4,2);
-insert into drc_contact
-values (5,2);
+INSERT INTO drc_conversation VALUES (1);
+INSERT INTO drc_conversation VALUES (2);
+INSERT INTO drc_conversation VALUES (3);
+INSERT INTO drc_conversation VALUES (4);
+INSERT INTO drc_conversation VALUES (5);
+
+INSERT INTO drc_participe VALUES (1, 1);
+INSERT INTO drc_participe VALUES (1, 3);
+INSERT INTO drc_participe VALUES (1, 5);
+
+INSERT INTO drc_participe VALUES (2, 1);
+INSERT INTO drc_participe VALUES (2, 3);
+INSERT INTO drc_participe VALUES (2, 5);
+
+
+INSERT INTO drc_participe VALUES (3, 1);
+INSERT INTO drc_participe VALUES (5, 3);
+INSERT INTO drc_participe VALUES (6, 5);
+
+ALTER TABLE drc_message ADD message CLOB;
+
+INSERT INTO DRC_MESSAGE (NO_CONVERSATION, NOM_FICHIER, MESSAGE, DATEPOSTED, NO_AUTHOR)
+ VALUES (1, NULL, 'test message convers 1', TO_DATE('05/12/1992', 'DD/MM/YYYY'), 1);
+INSERT INTO DRC_MESSAGE (NO_CONVERSATION, NOM_FICHIER, MESSAGE, DATEPOSTED, NO_AUTHOR)
+ VALUES (3, NULL, 'test message convers 2', TO_DATE('27/10/2017', 'DD/MM/YYYY'), 3);
+INSERT INTO DRC_MESSAGE (NO_CONVERSATION, NOM_FICHIER, MESSAGE, DATEPOSTED, NO_AUTHOR)
+ VALUES (5, NULL, 'test message convers 3', TO_DATE('29/02/2000', 'DD/MM/YYYY'), 5);
+
+COMMIT;

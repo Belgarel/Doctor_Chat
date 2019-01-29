@@ -3,18 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package doctor_chat.server;
+package doctor_chat.common;
 
 /**
  *
  * @author Home
  */
-public class AuthentificationFailedException extends Exception {
+public class NotFoundException extends Exception {
 
-    public AuthentificationFailedException() {
+    public NotFoundException() {
         super();
     }
-    public AuthentificationFailedException(String mess) {
+    public NotFoundException(String mess) {
         super(mess);
     }
+    
 }

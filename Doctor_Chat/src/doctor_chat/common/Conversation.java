@@ -5,21 +5,24 @@
  */
 package doctor_chat.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  *
  * @author Home
  */
-public class Conversation {
-    private ArrayList<User> members;
-    private ArrayList<Message> messages;
+public class Conversation implements Serializable {
+    private long id;
+    private HashSet<User> members;
+    private HashSet<Message> messages;
 
     public Conversation() {
-        this.members = new ArrayList<User>();
-        this.messages = new ArrayList<Message>();
+        this.members = new HashSet<User>();
+        this.messages = new HashSet<Message>();
     }
-    public Conversation(ArrayList<User> members, ArrayList<Message> messages) {
+    public Conversation(HashSet<User> members, HashSet<Message> messages) {
         this.members = members;
         this.messages = messages;
     }
@@ -39,20 +42,37 @@ public class Conversation {
     public boolean isMember(User member) {
         return this.members.contains(member);
     }
-    
-    public ArrayList<User> getMembers() {
-        return members;
+
+    public long getId() {
+        return id;
     }
-    public void setMembers(ArrayList<User> members) {
-        this.members = members;
+    public void setId(long id) {
+        this.id = id;
     }
-    public ArrayList<Message> getHistory() {
+    public HashSet<Message> getMessages() {
         return messages;
     }
-
-    public void setHistory(ArrayList<Message> history) {
-        this.messages = history;
+    public void setMessages(HashSet<Message> messages) {
+        this.messages = messages;
+    }
+    public HashSet<User> getMembers() {
+        return members;
+    }
+    public void setMembers(HashSet<User> members) {
+        this.members = members;
     }
     
-    
+    public String toString() {
+        String membersString = "";
+        for (User member : this.members) {
+            membersString = membersString.concat("\n|" + member);
+        }
+        String messagesString = "";
+        for (Message message : this.messages) {
+            messagesString = messagesString.concat("\n|messId : " + message.getId());
+        }
+        
+        return "CONVERSATION - id : " + this.id + " ; members : " + membersString
+                + "\n|messages : " + messagesString;
+    }
 }
