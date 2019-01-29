@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" ID="{EBC00E94-099E-49D9-A6C5-4CD326297C07}" Label="" LastModificationDate="1545130082" Name="Login" Objects="122" Symbols="36" Target="Java" TargetLink="Reference" Type="{18112060-1A4B-11D1-83D9-444553540000}" signature="CLD_OBJECT_MODEL" version="15.3.0.3248"?>
+<?PowerDesigner AppLocale="UTF16" ID="{EBC00E94-099E-49D9-A6C5-4CD326297C07}" Label="" LastModificationDate="1545145697" Name="Login" Objects="115" Symbols="28" Target="Java" TargetLink="Reference" Type="{18112060-1A4B-11D1-83D9-444553540000}" signature="CLD_OBJECT_MODEL" version="15.3.0.3248"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <Model xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -979,11 +979,11 @@ NameToCode=No</a:ModelOptionsText>
 <c:SequenceDiagrams>
 <o:SequenceDiagram Id="o5">
 <a:ObjectID>F42FE610-9CDE-412B-BC85-CD67A2F329EA</a:ObjectID>
-<a:Name>Login</a:Name>
-<a:Code>Login</a:Code>
+<a:Name>Login success</a:Name>
+<a:Code>Login_success</a:Code>
 <a:CreationDate>1545128965</a:CreationDate>
 <a:Creator>p1514527</a:Creator>
-<a:ModificationDate>1545129872</a:ModificationDate>
+<a:ModificationDate>1545145697</a:ModificationDate>
 <a:Modifier>p1514527</a:Modifier>
 <a:DisplayPreferences>[DisplayPreferences]
 
@@ -1609,8 +1609,8 @@ DESTINATION 0 Arial,8,N</a:FontList>
 <o:MessageSymbol Id="o32">
 <a:CreationDate>1545129390</a:CreationDate>
 <a:ModificationDate>1545130078</a:ModificationDate>
-<a:Rect>((-7725,8963), (-750,10509))</a:Rect>
-<a:ListOfPoints>((-7725,9263),(-750,9263))</a:ListOfPoints>
+<a:Rect>((-7725,2026), (5324,9263))</a:Rect>
+<a:ListOfPoints>((-7725,2026),(-750,9263))</a:ListOfPoints>
 <a:CornerStyle>2</a:CornerStyle>
 <a:ArrowStyle>8</a:ArrowStyle>
 <a:LineColor>128</a:LineColor>
