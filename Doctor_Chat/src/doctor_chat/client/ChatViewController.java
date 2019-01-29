@@ -48,6 +48,8 @@ public class ChatViewController implements Initializable {
         ArrayList<Button> buttons = new ArrayList<Button>();
         for (User contact : ViewController.instance().getContacts()) {
             Button button = new Button(contact.getLogin());
+            button.setId("chatWith" + contact.getLogin()); //identifiant qui permet de repérer le bouton
+            button.setOnAction(this::chatWith);
             buttons.add(button);
         }
         ObservableList<Button> contacts = FXCollections.observableArrayList(buttons);
@@ -59,10 +61,13 @@ public class ChatViewController implements Initializable {
         System.out.println(fieldMsg.getText());
         areaConv.setText(fieldMsg.getText());
     }
-
     @FXML
     private void clearMessage(ActionEvent event) {
         fieldMsg.clear();
+    }
+    
+    private void chatWith(ActionEvent ae) {
+System.out.println("Chat with " + ((Button)ae.getSource()).getId().substring(8));
     }
     
 }
