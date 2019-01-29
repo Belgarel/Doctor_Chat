@@ -5,8 +5,12 @@
  */
 package doctor_chat.client;
 
+import doctor_chat.common.User;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,9 +39,19 @@ public class ChatViewController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //Affichage de tous les contacts
+        ArrayList<Button> buttons = new ArrayList<Button>();
+        for (User contact : ViewController.instance().getContacts()) {
+            Button button = new Button(contact.getLogin());
+            buttons.add(button);
+        }
+        ObservableList<Button> contacts = FXCollections.observableArrayList(buttons);
+        contactList.setItems(contacts);
     }    
 
     @FXML
