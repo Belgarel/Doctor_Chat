@@ -8,6 +8,7 @@ package doctor_chat.client;
 import doctor_chat.client.connection.Client;
 import doctor_chat.client.connection.ConnectionNotInitializedException;
 import doctor_chat.common.connection.AuthentificationRequest;
+import doctor_chat.common.connection.SignUpRequest;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -68,9 +69,29 @@ public class ConnectionViewController implements Initializable {
     }
 
     @FXML
-    private void inscription(ActionEvent event) {
-    }
-    
+    private void inscription(ActionEvent event) throws ConnectionNotInitializedException  {
+        String[] server = fieldServer.getText().split(":");
+        boolean serverError = (server.length != 2);
+        int port = serverError ? 0 : Integer.valueOf(server[1]);
+        
+        if (serverError)
+            setError("Le champ Server doit être de la forme : \"localhost:9043\"");
+        else if ("".equals(fieldId.getText()))
+            setError("Le champ Identifiant ne peut pas être vide.");
+        else if ("".equals(fieldMdp.getText()))
+            setError("Merci de choisir un mot de passe.");
+        else {
+            try {
+                    Client.instance(server[0], port);
+                    Client.instance().sendMessage(new SignUpRequest(
+                        fieldId.getText(),
+                        fieldMdp.getText()));
+            } catch (IOException ex) {
+                Logger.getLogger(ConnectionViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        }
+    }    
     public void reactTo() { //méthode où un message est reçu 
         ;
     }

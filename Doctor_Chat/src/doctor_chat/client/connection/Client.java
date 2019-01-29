@@ -73,10 +73,10 @@ public class Client {
             ViewController.instance().getBehavior().authentificationOK((AuthentificationOK) mess);
         else if (mess instanceof AuthentificationFail)
             ViewController.instance().getBehavior().authentificationFail((AuthentificationFail) mess);
+        else if (mess instanceof SignUpFail)
+            ViewController.instance().getBehavior().signUpFail((SignUpFail) mess);
         //TODO: other types
     }
-    
-    
     
     public void setIn(ObjectInputStream in) {
         this.in = in;

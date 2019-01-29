@@ -7,6 +7,7 @@ package doctor_chat.client;
 
 import doctor_chat.common.connection.AuthentificationFail;
 import doctor_chat.common.connection.AuthentificationOK;
+import doctor_chat.common.connection.SignUpFail;
 
 /**
  *
@@ -25,6 +26,11 @@ public class ViewBehaviorChat implements ViewBehavior {
     }
     @Override
     public void authentificationFail(AuthentificationFail mess) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void signUpFail(SignUpFail mess) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
