@@ -77,7 +77,8 @@ System.out.println("Le client " + discClient.getId() + " vient de se déconnecte
                     client.sendServerMessage(mess);
                 else
                     System.out.println("Error: connection.Server > sendMessageToClients" +
-                            "Client was not found for user " + client.getAccount());
+                            "Client was not found for user " + client.getAccount().getNum()
+                            + " - " + client.getAccount().getLogin());
             }
         }
     }

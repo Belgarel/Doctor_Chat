@@ -42,8 +42,9 @@ public class ViewBehaviorChat implements ViewBehavior {
 
     @Override
     public void inviteToConversation(Conversation conv) {
-System.out.println("starting conversation " + conv);
-        //TODO : code here
+System.out.println("starting conversation " + conv.getId());
+        ViewController.instance().getConversations().add(conv);
+        controller.showConversation(conv);
     }
     
 }

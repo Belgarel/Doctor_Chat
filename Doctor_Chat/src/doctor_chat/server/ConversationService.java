@@ -141,13 +141,13 @@ public class ConversationService {
           so that the id of the newly created conversation can be retrieved. */
         Statement select = null;
         Statement update = null;
-        String sql = "select max(id) from DRC_CONVERSATION";
+        String sql = "select max(no_conversation) from DRC_CONVERSATION";
         int maxId = -1;
         try {
             //retreiving the id of the next conversation
             select = DBConnection.instance().getConnection().createStatement();
             ResultSet rs = select.executeQuery(sql);
-            if (rs.first()) //if table is not empty
+            if (rs.next()) //if table is not empty
                 maxId = rs.getInt(1) + 1;
             else //if the table is empty
                 maxId = 1;

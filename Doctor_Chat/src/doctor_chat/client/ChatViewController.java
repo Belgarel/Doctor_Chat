@@ -8,6 +8,7 @@ package doctor_chat.client;
 import doctor_chat.client.connection.Client;
 import doctor_chat.client.connection.ConnectionNotInitializedException;
 import doctor_chat.common.Conversation;
+import doctor_chat.common.Message;
 import doctor_chat.common.User;
 import doctor_chat.common.connection.ConversationCreateRequest;
 import java.net.URL;
@@ -86,9 +87,11 @@ public class ChatViewController implements Initializable {
             found = (current.getMembers().size() == 2) //c'est une conversation entre Account et Contact
                     && (current.isMember(contactLogin));
         }
+        
         if (found) //Si la conversation existe déjà chez le client, pas la peine de demander au server.
             ViewController.instance().getBehavior().inviteToConversation(current);
         else {
+            System.out.println("Starting a new conversation.");
             try {
                 //On demande au serveur de créer une nouvelle conversation contenant :
                 Conversation newConv = new Conversation();
@@ -109,6 +112,13 @@ public class ChatViewController implements Initializable {
             } catch (Exception ex) {
                 Logger.getLogger(ChatViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+    
+    public void showConversation (Conversation conversation) {
+        areaConv.clear();
+        for (Message m : conversation.getMessages()) {
+            areaConv.appendText(m.getAuthor().getLogin() + " :\n" + m.getContent() + "\n\n");
         }
     }
     
