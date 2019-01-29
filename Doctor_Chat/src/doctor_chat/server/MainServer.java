@@ -14,6 +14,7 @@ import doctor_chat.server.connection.Server;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+//import doctor_chat.server.ContactService;
 
 /**
  *
@@ -23,10 +24,11 @@ public class MainServer {
     public static void main(String[] args) {
         try {
             Server serv = new Server(8080);
+            //ContactService.instance().deleteContact(4, 5);
             
-            
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             Logger.getLogger(MainServer.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }   
 }

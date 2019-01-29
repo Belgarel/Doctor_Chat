@@ -53,11 +53,50 @@ public class ContactService {
         return ret;
     }
     
-    public void createContact(long user, long contact) {
-        throw new NotImplementedException();
+    public void createContact(long user, long contact) throws NotFoundException {
+        
+        UserService.instance().findUser(user);
+        UserService.instance().findUser(contact);
+        
+        Statement request = null;  
+        String sql = "INSERT INTO drc_contact(no_utilisateur, no_contact) VALUES("+ user +","+ contact +")";
+
+        try {
+            request = DBConnection.instance().getConnection().createStatement();
+            request.executeQuery(sql);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (request != null)
+                    request.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
     }
     public void deleteContact(long user, long contact) {
-        throw new NotImplementedException();
+       
+        Statement request = null;  
+        String sql = "DELETE FROM drc_contact WHERE (no_utilisateur = "+ user +" AND no_contact = "+ contact +")";
+        try {
+            request = DBConnection.instance().getConnection().createStatement();
+            request.executeQuery(sql);    
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (request != null)
+                    request.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+       
+        
     }
     
     

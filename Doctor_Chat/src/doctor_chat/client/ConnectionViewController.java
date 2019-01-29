@@ -70,31 +70,33 @@ public class ConnectionViewController implements Initializable {
 
     @FXML
     private void inscription(ActionEvent event) throws ConnectionNotInitializedException  {
+        
         String[] server = fieldServer.getText().split(":");
-        boolean serverError = (server.length != 2);
-        int port = serverError ? 0 : Integer.valueOf(server[1]);
-        
-        if (serverError)
-            setError("Le champ Server doit être de la forme : \"localhost:9043\"");
-        else if ("".equals(fieldId.getText()))
-            setError("Le champ Identifiant ne peut pas être vide.");
-        else if ("".equals(fieldMdp.getText()))
-            setError("Merci de choisir un mot de passe.");
-        else {
-            try {
-                    Client.instance(server[0], port);
-                    Client.instance().sendMessage(new SignUpRequest(
-                        fieldId.getText(),
-                        fieldMdp.getText()));
-            } catch (IOException ex) {
+        try {
+            boolean serverError = (server.length != 2);
+            int port = serverError ? 0 : Integer.parseInt(server[1]);
+            if (serverError)
+                setError("Le champ Server doit être de la forme : \"localhost:9043\"");
+            else if ("".equals(fieldId.getText()))
+                setError("Le champ Identifiant ne peut pas être vide.");
+            else if ("".equals(fieldMdp.getText()))
+                setError("Merci de choisir un mot de passe.");
+            else {
+                try {
+                        Client.instance(server[0], port);
+                        Client.instance().sendMessage(new SignUpRequest(
+                            fieldId.getText(),
+                            fieldMdp.getText()));
+                } catch (IOException ex) {
                 Logger.getLogger(ConnectionViewController.class.getName()).log(Level.SEVERE, null, ex);
+                } 
             }
-        
         }
+        catch (NumberFormatException ex) {
+            setError("\"Le champ Server doit être de la forme : \"localhost:9043\"");
+        }
+        
     }    
-    public void reactTo() { //méthode où un message est reçu 
-        ;
-    }
     public void setError(String err) {
         Platform.runLater(new Runnable() {
             @Override
