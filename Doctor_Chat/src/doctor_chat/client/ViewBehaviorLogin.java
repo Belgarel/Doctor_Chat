@@ -5,8 +5,10 @@
  */
 package doctor_chat.client;
 
+import doctor_chat.common.Conversation;
 import doctor_chat.common.connection.AuthentificationFail;
 import doctor_chat.common.connection.AuthentificationOK;
+import doctor_chat.common.connection.ConversationInvite;
 import doctor_chat.common.connection.SignUpFail;
 
 /**
@@ -36,6 +38,15 @@ public class ViewBehaviorLogin implements ViewBehavior {
     @Override
     public void signUpFail(SignUpFail mess) {
          controller.setError(mess.getMessage());
+    }
+
+    @Override
+    public void inviteToConversation(ConversationInvite mess) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    @Override
+    public void inviteToConversation(Conversation conv) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

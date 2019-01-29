@@ -5,8 +5,10 @@
  */
 package doctor_chat.client;
 
+import doctor_chat.common.Conversation;
 import doctor_chat.common.connection.AuthentificationFail;
 import doctor_chat.common.connection.AuthentificationOK;
+import doctor_chat.common.connection.ConversationInvite;
 import doctor_chat.common.connection.SignUpFail;
 
 /**
@@ -18,4 +20,6 @@ public interface ViewBehavior {
     public abstract void authentificationOK(AuthentificationOK mess);
     public abstract void authentificationFail(AuthentificationFail mess);
     public abstract void signUpFail(SignUpFail mess);
+    public abstract void inviteToConversation(ConversationInvite mess);
+    public abstract void inviteToConversation(Conversation conv);
 }

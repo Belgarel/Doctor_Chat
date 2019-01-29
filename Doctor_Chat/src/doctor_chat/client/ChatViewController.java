@@ -5,10 +5,17 @@
  */
 package doctor_chat.client;
 
+import doctor_chat.client.connection.Client;
+import doctor_chat.client.connection.ConnectionNotInitializedException;
+import doctor_chat.common.Conversation;
 import doctor_chat.common.User;
+import doctor_chat.common.connection.ConversationCreateRequest;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -67,7 +74,42 @@ public class ChatViewController implements Initializable {
     }
     
     private void chatWith(ActionEvent ae) {
-System.out.println("Chat with " + ((Button)ae.getSource()).getId().substring(8));
+        String contactLogin = ((Button)ae.getSource()).getId().substring(8);
+        System.out.println("Chat with " + contactLogin);
+        
+        //on vérifie que la conversation ne se trouve pas parmi les conversations existantes.
+        boolean found = false;
+        Iterator<Conversation> it = ViewController.instance().getConversations().iterator();
+        Conversation current = null;
+        while (!found && it.hasNext()) {
+            current = it.next();
+            found = (current.getMembers().size() == 2) //c'est une conversation entre Account et Contact
+                    && (current.isMember(contactLogin));
+        }
+        if (found) //Si la conversation existe déjà chez le client, pas la peine de demander au server.
+            ViewController.instance().getBehavior().inviteToConversation(current);
+        else {
+            try {
+                //On demande au serveur de créer une nouvelle conversation contenant :
+                Conversation newConv = new Conversation();
+                newConv.addMember(ViewController.instance().getAccount()); //notre compte
+                //et le compte du contact :
+                Iterator<User> ite = ViewController.instance().getContacts().iterator();
+                User curr = null;
+                while (!found && ite.hasNext()) {
+                    curr = ite.next();
+                    found = curr.getLogin().equals(contactLogin);
+                    if (found)
+                        newConv.addMember(curr);
+                }
+                if (!found) //ne devrait JAMAIS arriver !
+                    throw new Exception("Internal error: user " + contactLogin + " was not in the list of contacts");
+
+                Client.instance().sendMessage(new ConversationCreateRequest(newConv));
+            } catch (Exception ex) {
+                Logger.getLogger(ChatViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
 }

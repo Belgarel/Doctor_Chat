@@ -8,6 +8,7 @@ package doctor_chat.common;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  *
@@ -41,6 +42,16 @@ public class Conversation implements Serializable {
     }
     public boolean isMember(User member) {
         return this.members.contains(member);
+    }
+    public boolean isMember(String login) {
+        boolean found = false;
+        Iterator<User> it = this.members.iterator();
+        User current = null;
+        while (!found && it.hasNext()) {
+            current = it.next();
+            found = current.getLogin().equals(login);
+        }
+        return found;
     }
 
     public long getId() {

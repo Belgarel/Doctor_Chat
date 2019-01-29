@@ -5,8 +5,10 @@
  */
 package doctor_chat.client;
 
+import doctor_chat.common.Conversation;
 import doctor_chat.common.connection.AuthentificationFail;
 import doctor_chat.common.connection.AuthentificationOK;
+import doctor_chat.common.connection.ConversationInvite;
 import doctor_chat.common.connection.SignUpFail;
 
 /**
@@ -28,10 +30,20 @@ public class ViewBehaviorChat implements ViewBehavior {
     public void authentificationFail(AuthentificationFail mess) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
     @Override
     public void signUpFail(SignUpFail mess) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void inviteToConversation(ConversationInvite mess) {
+        inviteToConversation(mess.getConversation());
+    }
+
+    @Override
+    public void inviteToConversation(Conversation conv) {
+System.out.println("starting conversation " + conv);
+        //TODO : code here
     }
     
 }
