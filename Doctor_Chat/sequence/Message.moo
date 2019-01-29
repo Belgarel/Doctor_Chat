@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" ID="{CFF25679-59B0-412C-8A13-0B8B95C23428}" Label="" LastModificationDate="1548748420" Name="Diagramme de séquence UML_1" Objects="156" Symbols="67" Target="Java" TargetLink="Reference" Type="{18112060-1A4B-11D1-83D9-444553540000}" signature="CLD_OBJECT_MODEL" version="15.3.0.3248"?>
+<?PowerDesigner AppLocale="UTF16" ID="{CFF25679-59B0-412C-8A13-0B8B95C23428}" Label="" LastModificationDate="1548753420" Name="Diagramme de séquence UML_1" Objects="156" Symbols="67" Target="Java" TargetLink="Reference" Type="{18112060-1A4B-11D1-83D9-444553540000}" signature="CLD_OBJECT_MODEL" version="15.3.0.3248"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <Model xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -1390,8 +1390,8 @@ Shadow=0</a:DisplayPreferences>
 <a:PaperSource>15</a:PaperSource>
 <c:Symbols>
 <o:InteractionSymbol Id="o6">
-<a:ModificationDate>1548748420</a:ModificationDate>
-<a:Rect>((-2775,-9832), (59749,16214))</a:Rect>
+<a:ModificationDate>1548753420</a:ModificationDate>
+<a:Rect>((2677,-9832), (59749,16214))</a:Rect>
 <a:AutoAdjustToText>0</a:AutoAdjustToText>
 <a:BaseSymbol.Flags>4</a:BaseSymbol.Flags>
 <a:LineColor>15257808</a:LineColor>
