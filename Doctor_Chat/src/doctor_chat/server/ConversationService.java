@@ -156,6 +156,7 @@ public class ConversationService {
             update = DBConnection.instance().getConnection().createStatement();
             update.executeUpdate(sql);
             
+System.out.println("Creating conversation n° " + maxId);
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
