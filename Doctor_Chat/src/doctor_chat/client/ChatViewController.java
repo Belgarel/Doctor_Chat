@@ -10,6 +10,7 @@ import doctor_chat.client.connection.ConnectionNotInitializedException;
 import doctor_chat.common.Conversation;
 import doctor_chat.common.Message;
 import doctor_chat.common.User;
+import doctor_chat.common.connection.ContactRequest;
 import doctor_chat.common.connection.ConversationCreateRequest;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,6 +45,8 @@ public class ChatViewController implements Initializable {
     private Button btnClearMsg;
      @FXML
     private ListView contactList;
+     
+    private Button addContact;
 
     /**
      * Initializes the controller class.
@@ -60,6 +63,11 @@ public class ChatViewController implements Initializable {
             button.setOnAction(this::chatWith);
             buttons.add(button);
         }
+        
+        this.addContact = new Button("Nouveau contact");
+        this.addContact.setOnAction(this::addContact);
+        buttons.add(this.addContact);
+        
         ObservableList<Button> contacts = FXCollections.observableArrayList(buttons);
         contactList.setItems(contacts);
     }    
@@ -113,6 +121,31 @@ public class ChatViewController implements Initializable {
                 Logger.getLogger(ChatViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    private void addContact(ActionEvent ae) {
+        String contactLogin = ViewController.instance().askContact();
+        //Vérifier que quelque chose a été renvoyé.
+        if (contactLogin == null || "".equals(contactLogin))
+            return;
+        //Vérifier que le login ne fait pas déjà partie des contacts.
+        boolean found = false;
+        for (User u : ViewController.instance().getContacts())
+            found = contactLogin.equals(u.getLogin());
+        if (found) {
+            showError("Erreur : " + contactLogin + " fait déjà partie de vos contacts.");
+            return;
+        }
+        try {
+            Client.instance().sendMessage(new ContactRequest(ViewController.instance().getAccount(), contactLogin));
+        } catch (ConnectionNotInitializedException ex) {
+            Logger.getLogger(ChatViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void showError(String err) {
+        areaConv.clear();
+        areaConv.setText(err);
     }
     
     public void showConversation (Conversation conversation) {

@@ -19,6 +19,7 @@ import doctor_chat.common.connection.AuthentificationFail;
 import doctor_chat.common.connection.AuthentificationOK;
 import doctor_chat.common.connection.AuthentificationRequest;
 import doctor_chat.common.connection.ClientMessage;
+import doctor_chat.common.connection.ContactRequest;
 import doctor_chat.common.connection.ConversationCreateRequest;
 import doctor_chat.common.connection.ConversationInvite;
 import doctor_chat.common.connection.MessagePost;
@@ -164,6 +165,8 @@ System.out.println("Not listening to client " + this.id + " anymore.");
             createConv((ConversationCreateRequest) mess);
         else if (mess instanceof MessagePost)
             postMessage((MessagePost) mess);
+        else if (mess instanceof ContactRequest)
+            addContact((ContactRequest) mess);
     }
     /**
      * determines wether the sign up request is valid or invalid
@@ -212,6 +215,9 @@ System.out.println("Not listening to client " + this.id + " anymore.");
         //then, send an invitation to all members for synchronization purposes.
         ConversationInvite reply = new ConversationInvite(conversation);
         server.sendMessageToClients(reply, reply.getConversation().getMembers());
+    }
+    public void addContact(ContactRequest message) {
+        //TODO
     }
     private void postMessage(MessagePost message) {
         //Database

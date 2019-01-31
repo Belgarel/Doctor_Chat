@@ -70,7 +70,12 @@ public class ViewController {
                 } catch (IOException ex) {
                     Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }});
+            }}
+        );
+    }
+    public String askContact() {
+        ; //TODO. For now, mock.
+        return "jules verne";
     }
     public User getAccount() {
         return account;
