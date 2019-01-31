@@ -55,21 +55,7 @@ public class ChatViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //Affichage de tous les contacts
-        ArrayList<Button> buttons = new ArrayList<Button>();
-        for (User contact : ViewController.instance().getContacts()) {
-            Button button = new Button(contact.getLogin());
-            button.setId("chatWith" + contact.getLogin()); //identifiant qui permet de repérer le bouton
-            button.setOnAction(this::chatWith);
-            buttons.add(button);
-        }
-        
-        this.addContact = new Button("Nouveau contact");
-        this.addContact.setOnAction(this::addContact);
-        buttons.add(this.addContact);
-        
-        ObservableList<Button> contacts = FXCollections.observableArrayList(buttons);
-        contactList.setItems(contacts);
+        updateContacts();
     }    
 
     @FXML
@@ -80,6 +66,24 @@ public class ChatViewController implements Initializable {
     @FXML
     private void clearMessage(ActionEvent event) {
         fieldMsg.clear();
+    }
+    
+    public void updateContacts() {
+        //Affichage de tous les contacts
+        ArrayList<Button> buttons = new ArrayList<Button>();
+        for (User contact : ViewController.instance().getContacts()) {
+            Button button = new Button(contact.getLogin());
+            button.setId("chatWith" + contact.getLogin()); //identifiant qui permet de repérer le bouton
+            button.setOnAction(this::chatWith);
+            buttons.add(button);
+        }
+        if (this.addContact == null)
+            this.addContact = new Button("Nouveau contact");
+        this.addContact.setOnAction(this::addContact);
+        buttons.add(this.addContact);
+        
+        ObservableList<Button> contacts = FXCollections.observableArrayList(buttons);
+        contactList.setItems(contacts);
     }
     
     private void chatWith(ActionEvent ae) {
@@ -125,25 +129,9 @@ public class ChatViewController implements Initializable {
 
     private void addContact(ActionEvent ae) {
         String contactLogin = ViewController.instance().askContact();
-        //Vérifier que quelque chose a été renvoyé.
-        if (contactLogin == null || "".equals(contactLogin))
-            return;
-        //Vérifier que le login ne fait pas déjà partie des contacts.
-        boolean found = false;
-        for (User u : ViewController.instance().getContacts())
-            found = contactLogin.equals(u.getLogin());
-        if (found) {
-            showError("Erreur : " + contactLogin + " fait déjà partie de vos contacts.");
-            return;
-        }
-        try {
-            Client.instance().sendMessage(new ContactRequest(ViewController.instance().getAccount(), contactLogin));
-        } catch (ConnectionNotInitializedException ex) {
-            Logger.getLogger(ChatViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
-    private void showError(String err) {
+    public void showError(String err) {
         areaConv.clear();
         areaConv.setText(err);
     }

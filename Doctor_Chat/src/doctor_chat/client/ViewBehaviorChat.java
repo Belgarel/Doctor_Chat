@@ -23,6 +23,11 @@ public class ViewBehaviorChat implements ViewBehavior {
     }
 
     @Override
+    public void showError(String err) {
+        controller.showError(err);
+    }
+
+    @Override
     public void authentificationOK(AuthentificationOK mess) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

@@ -17,6 +17,7 @@ import doctor_chat.common.connection.SignUpFail;
  */
 public interface ViewBehavior {
     
+    public abstract void showError(String err);
     public abstract void authentificationOK(AuthentificationOK mess);
     public abstract void authentificationFail(AuthentificationFail mess);
     public abstract void signUpFail(SignUpFail mess);

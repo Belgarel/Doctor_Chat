@@ -31,6 +31,11 @@ public class ViewBehaviorLogin implements ViewBehavior {
     }
 
     @Override
+    public void showError(String err) {
+        controller.setError(err);
+    }
+
+    @Override
     public void authentificationFail(AuthentificationFail mess) {
         controller.setError(mess.getMessage());
     }

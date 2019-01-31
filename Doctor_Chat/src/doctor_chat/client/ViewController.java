@@ -5,8 +5,11 @@
  */
 package doctor_chat.client;
 
+import doctor_chat.client.connection.Client;
+import doctor_chat.client.connection.ConnectionNotInitializedException;
 import doctor_chat.common.Conversation;
 import doctor_chat.common.User;
+import doctor_chat.common.connection.ContactRequest;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -15,6 +18,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -74,9 +78,52 @@ public class ViewController {
         );
     }
     public String askContact() {
-        ; //TODO. For now, mock.
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FXMLLoader loader = new FXMLLoader(
+                            getClass().getResource(
+                            "ChatView.fxml")); //TODO: formulaire
+                    Parent root = loader.load();
+                    Scene scene = new Scene(root);
+                    
+                    final Stage askContactDialog = new Stage();
+                    askContactDialog.initModality(Modality.NONE);
+                    askContactDialog.initOwner(stage);
+                    askContactDialog.setScene(scene);
+                    askContactDialog.show();
+                } catch (IOException ex) {
+                    Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }}
+        );
+        //TODO. For now, mock.
         return "jules verne";
     }
+    /**
+     * This function checks if a contact login is in the list of the user's contacts, then coordinates with the server to make sure it is.
+     * @param contactLogin login of the requested contact
+     */
+    public void addContact(String contactLogin) {
+        //Vérifier que quelque chose a été renvoyé.
+        if (contactLogin == null || "".equals(contactLogin))
+            return;
+        //Vérifier que le login ne fait pas déjà partie des contacts.
+        boolean found = false;
+        for (User u : ViewController.instance().getContacts())
+            found = contactLogin.equals(u.getLogin());
+        if (found) {
+            behavior.showError("Erreur : " + contactLogin + " fait déjà partie de vos contacts.");
+            return;
+        }
+        try {
+            Client.instance().sendMessage(new ContactRequest(ViewController.instance().getAccount(), contactLogin));
+        } catch (ConnectionNotInitializedException ex) {
+            Logger.getLogger(ChatViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public User getAccount() {
         return account;
     }
