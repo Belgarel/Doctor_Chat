@@ -225,9 +225,7 @@ System.out.println("Not listening to client " + this.id + " anymore.");
         
         //Notification of the members of the conversation
         MessagePosted reply = new MessagePosted(message.getMessage());
-        HashSet<User> clientsToNotify = message.getMessage().getConversation().getMembers();
-        clientsToNotify.remove(message.getMessage().getAuthor()); //do not notify the client who posted the message
-        server.sendMessageToClients(reply, clientsToNotify);
+        server.sendMessageToClients(reply, message.getMessage().getConversation().getMembers());
     }
     
 }
