@@ -29,6 +29,11 @@ public class AddContactViewController {
     private Label errorLabel;
 
     @FXML
+    /**
+     * This function checks if a contact login is in the list of the user's contacts, then coordinates with the server to make sure it is.
+     * It is called by an add-contact pop-up and it does not close it.
+     * @param contactLogin login of the requested contact
+     */
     private void send(ActionEvent event) throws ConnectionNotInitializedException {
        
         String contactLogin = login.getText();
@@ -59,6 +64,7 @@ public class AddContactViewController {
 
     @FXML
     private void cancel(ActionEvent event) {  
+          //
     }
     
     public void showError(String err) {

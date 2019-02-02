@@ -27,7 +27,7 @@ public class ViewBehaviorAddContact extends ViewBehaviorChat {
     }
     @Override
     public void contactFail(ContactFail mess) {
-        //TODO
+        contactController.showError(mess.getMessage());
     }
     @Override
     public void showError(String err) {
