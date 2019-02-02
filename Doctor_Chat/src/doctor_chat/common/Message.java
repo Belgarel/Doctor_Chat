@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author Home
  */
-public class Message implements Serializable {
+public class Message implements Serializable, Comparable {
 
     private long id;
     private Date date;
@@ -89,10 +89,19 @@ public class Message implements Serializable {
     }
     
 
+    @Override
+    public int compareTo(Object o) {
+        if (!(o instanceof Message))
+            throw new IllegalArgumentException("Message, compareTo: argument is not a message");
+        Message other = (Message) o;
+        return this.getDate().compareTo(other.getDate());
+    }
+    @Override
     public String toString() {
         return "MESSAGE - id : " + id + ";  conv : " + conversation + "\n|date : " + date
                 + " ; content : \"" + content + "\" ; filePath : " + filePath
                 + "\n|author : " + author;
     }
+
 
 }

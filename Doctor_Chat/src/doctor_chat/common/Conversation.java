@@ -19,15 +19,16 @@ import java.util.Iterator;
 public class Conversation implements Serializable {
     private long id;
     private HashSet<User> members;
-    private HashSet<Message> messages;
+    private ArrayList<Message> messages;
 
     public Conversation() {
         this.members = new HashSet<User>();
-        this.messages = new HashSet<Message>();
+        this.messages = new ArrayList<Message>();
     }
-    public Conversation(HashSet<User> members, HashSet<Message> messages) {
+    public Conversation(HashSet<User> members, ArrayList<Message> messages) {
         this.members = members;
         this.messages = messages;
+        Collections.sort(this.messages);
     }
     
     public boolean addMessage(Message message) {
@@ -62,10 +63,10 @@ public class Conversation implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
-    public HashSet<Message> getMessages() {
+    public ArrayList<Message> getMessages() {
         return messages;
     }
-    public void setMessages(HashSet<Message> messages) {
+    public void setMessages(ArrayList<Message> messages) {
         this.messages = messages;
     }
     public HashSet<User> getMembers() {
