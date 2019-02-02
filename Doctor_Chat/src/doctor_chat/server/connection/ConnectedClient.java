@@ -19,6 +19,8 @@ import doctor_chat.common.connection.AuthentificationFail;
 import doctor_chat.common.connection.AuthentificationOK;
 import doctor_chat.common.connection.AuthentificationRequest;
 import doctor_chat.common.connection.ClientMessage;
+import doctor_chat.common.connection.ContactFail;
+import doctor_chat.common.connection.ContactOK;
 import doctor_chat.common.connection.ContactRequest;
 import doctor_chat.common.connection.ConversationCreateRequest;
 import doctor_chat.common.connection.ConversationInvite;
@@ -27,6 +29,7 @@ import doctor_chat.common.connection.MessagePosted;
 import doctor_chat.common.connection.ServerMessage;
 import doctor_chat.common.connection.SignUpFail;
 import doctor_chat.common.connection.SignUpRequest;
+import doctor_chat.server.ContactService;
 import doctor_chat.server.ConversationService;
 import doctor_chat.server.MessageService;
 import doctor_chat.server.UserService;
@@ -217,7 +220,16 @@ System.out.println("Not listening to client " + this.id + " anymore.");
         server.sendMessageToClients(reply, reply.getConversation().getMembers());
     }
     public void addContact(ContactRequest message) {
-        //TODO
+        User requester = message.getAccount();
+        User contact = null;
+        try {
+            contact = UserService.instance().findUser(message.getContactLogin());
+            ContactService.instance().createContact(requester.getNum(), contact.getNum());
+            sendServerMessage(new ContactOK(contact));
+        } catch (NotFoundException ex) {
+            sendServerMessage(new ContactFail("Erreur : l'utilisateur "
+                    + message.getContactLogin() + " n'existe pas."));
+        }
     }
     private void postMessage(MessagePost message) {
         //Database
