@@ -37,7 +37,6 @@ public class ViewController {
     
     private ViewController() {
         login();
-        //chat();
     }
     
     public void login() {
