@@ -25,6 +25,15 @@ public class Message implements Serializable {
     public Message() {
     }
 
+    public Message(Date date, String content, String filePath, User author, Conversation conversation) {
+        this.date = date;
+        this.content = content;
+        this.filePath = filePath;
+        this.author = author;
+        this.conversation = conversation;
+    }
+    
+
     public long getId() {
         return id;
     }

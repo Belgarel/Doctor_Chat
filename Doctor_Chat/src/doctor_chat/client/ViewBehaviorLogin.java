@@ -11,6 +11,7 @@ import doctor_chat.common.connection.AuthentificationOK;
 import doctor_chat.common.connection.ContactFail;
 import doctor_chat.common.connection.ContactOK;
 import doctor_chat.common.connection.ConversationInvite;
+import doctor_chat.common.connection.MessagePosted;
 import doctor_chat.common.connection.SignUpFail;
 
 /**
@@ -63,6 +64,11 @@ public class ViewBehaviorLogin implements ViewBehavior {
 
     @Override
     public void contactFail(ContactFail mess) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void receiveMessage(MessagePosted mess) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

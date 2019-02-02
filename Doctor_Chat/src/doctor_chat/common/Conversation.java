@@ -7,6 +7,8 @@ package doctor_chat.common;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -71,6 +73,13 @@ public class Conversation implements Serializable {
     }
     public void setMembers(HashSet<User> members) {
         this.members = members;
+    }
+    
+    public boolean equals(Object o) {
+        if (!(o instanceof Conversation))
+            return false;
+        Conversation other = (Conversation) o;
+        return this.id == other.getId();
     }
     
     public String toString() {

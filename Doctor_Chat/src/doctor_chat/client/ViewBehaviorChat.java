@@ -6,12 +6,15 @@
 package doctor_chat.client;
 
 import doctor_chat.common.Conversation;
+import doctor_chat.common.Message;
 import doctor_chat.common.connection.AuthentificationFail;
 import doctor_chat.common.connection.AuthentificationOK;
 import doctor_chat.common.connection.ContactFail;
 import doctor_chat.common.connection.ContactOK;
 import doctor_chat.common.connection.ConversationInvite;
+import doctor_chat.common.connection.MessagePosted;
 import doctor_chat.common.connection.SignUpFail;
+import java.util.Iterator;
 
 /**
  *
@@ -65,6 +68,28 @@ System.out.println("starting conversation " + conv.getId());
 
     public ChatViewController getController() {
         return controller;
+    }
+
+    @Override
+    public void receiveMessage(MessagePosted mess) {
+        Message message = mess.getMessage();
+        //Finding the conversation to which the message should be added
+        Conversation conv = null;
+        boolean found = false;
+        Iterator<Conversation> it = ViewController.instance().getConversations().iterator();
+        while (!found && it.hasNext()) {
+            conv = it.next();
+            found = conv.getId() == message.getConversation().getId();
+        }
+        if (!found) {
+            System.out.println("Message received from unknown conversation: " + message);
+            return;
+        }
+        //Adding the message to the conversation.
+        conv.addMessage(message);
+        if (conv.equals(controller.getCurrentConversation()))
+            controller.showConversation(conv);
+            
     }
     
 }

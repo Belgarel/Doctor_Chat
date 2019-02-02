@@ -12,12 +12,15 @@ import doctor_chat.common.Message;
 import doctor_chat.common.User;
 import doctor_chat.common.connection.ContactRequest;
 import doctor_chat.common.connection.ConversationCreateRequest;
+import doctor_chat.common.connection.MessagePost;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,6 +50,7 @@ public class ChatViewController implements Initializable {
     private ListView contactList;
      
     private Button addContact;
+    private Conversation currentConversation;
 
     /**
      * Initializes the controller class.
@@ -56,12 +60,27 @@ public class ChatViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         updateContacts();
+        currentConversation = null;
     }    
 
     @FXML
     private void sendMessage(ActionEvent event) {
-        System.out.println(fieldMsg.getText());
-        areaConv.setText(fieldMsg.getText());
+        //if no conversation is selected, no message can be sent
+        if (currentConversation == null) {
+            showError("Sélectionnez une conversation");
+            return;
+        }
+        
+        Message message = new Message(Calendar.getInstance().getTime(),
+                fieldMsg.getText(),
+                null, //no filepath yet -> feature dropped
+                ViewController.instance().getAccount(),
+                currentConversation);
+        try {
+            Client.instance().sendMessage(new MessagePost(message));
+        } catch (ConnectionNotInitializedException ex) {
+            showError("La connection n'est pas intialisée.");
+        }
     }
     @FXML
     private void clearMessage(ActionEvent event) {
@@ -130,17 +149,32 @@ public class ChatViewController implements Initializable {
     private void addContact(ActionEvent ae) {
         ViewController.instance().askContact();
     }
+
+    public Conversation getCurrentConversation() {
+        return currentConversation;
+    }
     
     public void showError(String err) {
-        areaConv.clear();
-        areaConv.setText(err);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                areaConv.clear();
+                areaConv.setText(err);
+            }
+        });
     }
     
     public void showConversation (Conversation conversation) {
-        areaConv.clear();
-        for (Message m : conversation.getMessages()) {
-            areaConv.appendText(m.getAuthor().getLogin() + " :\n" + m.getContent() + "\n\n");
-        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                areaConv.clear();
+                currentConversation = conversation;
+                for (Message m : conversation.getMessages()) {
+                    areaConv.appendText(m.getAuthor().getLogin() + " :\n" + m.getContent() + "\n\n");
+                }
+            }
+        });
     }
     
 }
