@@ -128,7 +128,7 @@ public class ChatViewController implements Initializable {
     }
 
     private void addContact(ActionEvent ae) {
-        String contactLogin = ViewController.instance().askContact();
+        ViewController.instance().askContact();
     }
     
     public void showError(String err) {

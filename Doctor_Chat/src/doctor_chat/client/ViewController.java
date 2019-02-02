@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 public class ViewController {
     private static ViewController instance = null;
     private static Stage stage = null;
+    private static Stage askContactDialog;
     private ViewBehavior behavior;
     
     private User account;
@@ -77,20 +78,20 @@ public class ViewController {
             }}
         );
     }
-    public String askContact() {
+    public void askContact() {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 try {
                     FXMLLoader loader = new FXMLLoader(
                             getClass().getResource(
-                            "ChatView.fxml")); //TODO: formulaire
+                            "AddContactView.fxml")); //TODO: formulaire
                     Parent root = loader.load();
                     Scene scene = new Scene(root);
                     
-                    final Stage askContactDialog = new Stage();
-                    askContactDialog.initModality(Modality.NONE);
+                    askContactDialog = new Stage();
                     askContactDialog.initOwner(stage);
+                    askContactDialog.initModality(Modality.WINDOW_MODAL);
                     askContactDialog.setScene(scene);
                     askContactDialog.show();
                 } catch (IOException ex) {
@@ -98,8 +99,6 @@ public class ViewController {
                 }
             }}
         );
-        //TODO. For now, mock.
-        return "jules verne";
     }
     /**
      * This function checks if a contact login is in the list of the user's contacts, then coordinates with the server to make sure it is.
