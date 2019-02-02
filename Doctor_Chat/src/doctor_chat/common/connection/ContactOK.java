@@ -6,12 +6,13 @@
 package doctor_chat.common.connection;
 
 import doctor_chat.common.User;
+import java.io.Serializable;
 
 /**
  *
  * @author Home
  */
-public class ContactOK {
+public class ContactOK extends ServerMessage implements Serializable {
     
     protected User contactAccount;
 
