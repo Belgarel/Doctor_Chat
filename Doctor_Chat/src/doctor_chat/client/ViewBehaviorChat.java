@@ -8,6 +8,8 @@ package doctor_chat.client;
 import doctor_chat.common.Conversation;
 import doctor_chat.common.connection.AuthentificationFail;
 import doctor_chat.common.connection.AuthentificationOK;
+import doctor_chat.common.connection.ContactFail;
+import doctor_chat.common.connection.ContactOK;
 import doctor_chat.common.connection.ConversationInvite;
 import doctor_chat.common.connection.SignUpFail;
 
@@ -50,6 +52,19 @@ public class ViewBehaviorChat implements ViewBehavior {
 System.out.println("starting conversation " + conv.getId());
         ViewController.instance().getConversations().add(conv);
         controller.showConversation(conv);
+    }
+
+    @Override
+    public void contactOK(ContactOK mess) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    @Override
+    public void contactFail(ContactFail mess) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public ChatViewController getController() {
+        return controller;
     }
     
 }

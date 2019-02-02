@@ -29,4 +29,7 @@ public class AddContactViewController {
     private void cancel(ActionEvent event) {
     }
     
+    public void showError(String err) {
+        
+    }
 }

@@ -93,6 +93,10 @@ public class ViewController {
                     askContactDialog.initModality(Modality.WINDOW_MODAL);
                     askContactDialog.setScene(scene);
                     askContactDialog.show();
+                    
+                    //updating the behavior
+                    ChatViewController mainWindowsController = ((ViewBehaviorChat) behavior).getController();
+                    behavior = new ViewBehaviorAddContact(mainWindowsController, loader.getController());
                 } catch (IOException ex) {
                     Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -101,9 +105,10 @@ public class ViewController {
     }
     /**
      * This function checks if a contact login is in the list of the user's contacts, then coordinates with the server to make sure it is.
+     * It is called by an add-contact pop-up and it does not close it.
      * @param contactLogin login of the requested contact
      */
-    public void addContact(String contactLogin) {
+    public void sendAddContactRequest(String contactLogin) {
         //Vérifier que quelque chose a été renvoyé.
         if (contactLogin == null || "".equals(contactLogin))
             return;
