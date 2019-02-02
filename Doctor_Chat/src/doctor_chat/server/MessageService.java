@@ -31,7 +31,7 @@ public class MessageService {
         HashSet<Message> ret = new HashSet<Message>();
         Statement request = null;
         ResultSet results = null;
-        String sql = "select * from drc_message where no_conversation = " + conversation.getId();
+        String sql = "select * from drc_message where no_conversation = " + conversation.getId() + "order by DATEPOSTED asc";
         try {
             request = DBConnection.instance().getConnection().createStatement();
             results = request.executeQuery(sql);
@@ -122,7 +122,8 @@ public class MessageService {
         return ret;
     }
     
-    public void createMessage(Message message) {
+    public synchronized long createMessage(Message message) {
+        Statement select = null;
         Statement update = null;
         //filePath field
         String concatFilePath = "'" + message.getFilePath() + "', '";
@@ -130,14 +131,27 @@ public class MessageService {
             concatFilePath = "NULL, '";
         //Date field
         String concatDate = message.getDateDDMMYYY();
-        String sql = "insert into DRC_MESSAGE (NO_CONVERSATION, NOM_FICHIER, MESSAGE, DATEPOSTED, NO_AUTHOR) values ("
-                + message.getConversation().getId() + ", "
-                + concatFilePath
-                + message.getContent() + "', TO_DATE('"
-                + concatDate + "', 'DD/MM/YY'), "
-                + message.getAuthor().getNum() + ")"
-                ;
+        //Id field
+        String sql = "select max(NO_MESSAGE) from DRC_MESSAGE";
+        long maxId = -1;
         try {
+            //retreiving the id of the next message
+            select = DBConnection.instance().getConnection().createStatement();
+            ResultSet rs = select.executeQuery(sql);
+            if (rs.next()) //if table is not empty
+                maxId = rs.getLong(1) + 1;
+            else //if the table is empty
+                maxId = 1;
+            
+            //Creating the message
+            sql = "insert into DRC_MESSAGE (NO_MESSAGE, NO_CONVERSATION, NOM_FICHIER, MESSAGE, DATEPOSTED, NO_AUTHOR) values ("
+                    + maxId + ", "
+                    + message.getConversation().getId() + ", "
+                    + concatFilePath
+                    + message.getContent() + "', TO_DATE('"
+                    + concatDate + "', 'DD/MM/YY'), "
+                    + message.getAuthor().getNum() + ")"
+                    ;
             update = DBConnection.instance().getConnection().createStatement();
             update.executeUpdate(sql);
             
@@ -151,6 +165,7 @@ public class MessageService {
                 Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return maxId;
     }
     public void delete(Message mess) {
         delete(mess.getId());

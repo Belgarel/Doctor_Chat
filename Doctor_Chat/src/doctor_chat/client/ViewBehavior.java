@@ -11,6 +11,7 @@ import doctor_chat.common.connection.AuthentificationOK;
 import doctor_chat.common.connection.ContactFail;
 import doctor_chat.common.connection.ContactOK;
 import doctor_chat.common.connection.ConversationInvite;
+import doctor_chat.common.connection.MessagePosted;
 import doctor_chat.common.connection.SignUpFail;
 
 /**
@@ -27,4 +28,5 @@ public interface ViewBehavior {
     public abstract void contactFail(ContactFail mess);
     public abstract void inviteToConversation(ConversationInvite mess);
     public abstract void inviteToConversation(Conversation conv);
+    public abstract void receiveMessage(MessagePosted mess);
 }

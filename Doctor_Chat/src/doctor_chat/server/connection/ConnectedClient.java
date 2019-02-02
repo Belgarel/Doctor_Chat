@@ -233,11 +233,14 @@ System.out.println("Not listening to client " + this.id + " anymore.");
     }
     private void postMessage(MessagePost message) {
         //Database
-        MessageService.instance().createMessage(message.getMessage());
-        
-        //Notification of the members of the conversation
-        MessagePosted reply = new MessagePosted(message.getMessage());
-        server.sendMessageToClients(reply, message.getMessage().getConversation().getMembers());
+        long messId = MessageService.instance().createMessage(message.getMessage());
+        try {
+            //Notification of the members of the conversation
+            MessagePosted reply = new MessagePosted(MessageService.instance().findMessagesbyId(messId));
+            server.sendMessageToClients(reply, message.getMessage().getConversation().getMembers());
+        } catch (NotFoundException ex) {
+            System.out.println("Error: could not find message with id " + messId);
+        }
     }
     
 }

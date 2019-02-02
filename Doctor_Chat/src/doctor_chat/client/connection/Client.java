@@ -75,6 +75,15 @@ public class Client {
             ViewController.instance().getBehavior().authentificationFail((AuthentificationFail) mess);
         else if (mess instanceof SignUpFail)
             ViewController.instance().getBehavior().signUpFail((SignUpFail) mess);
+        else if (mess instanceof ContactOK)
+            ViewController.instance().getBehavior().contactOK((ContactOK) mess);
+        else if (mess instanceof ContactFail)
+            ViewController.instance().getBehavior().contactFail((ContactFail) mess);
+        else if (mess instanceof ConversationInvite)
+            ViewController.instance().getBehavior().inviteToConversation((ConversationInvite) mess);
+        else if (mess instanceof MessagePosted)
+            ViewController.instance().getBehavior().receiveMessage((MessagePosted) mess);
+            
         //TODO: other types
     }
     
