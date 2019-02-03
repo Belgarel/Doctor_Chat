@@ -27,8 +27,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class MessageService {
     private static MessageService instance = null;
     
-    public HashSet<Message> findMessagesForConversation(Conversation conversation) {
-        HashSet<Message> ret = new HashSet<Message>();
+    public ArrayList<Message> findMessagesForConversation(Conversation conversation) {
+        ArrayList<Message> ret = new ArrayList<Message>();
         Statement request = null;
         ResultSet results = null;
         String sql = "select * from drc_message where no_conversation = " + conversation.getId() + "order by DATEPOSTED asc";

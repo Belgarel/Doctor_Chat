@@ -171,7 +171,9 @@ public class ChatViewController implements Initializable {
                 areaConv.clear();
                 currentConversation = conversation;
                 for (Message m : conversation.getMessages()) {
-                    areaConv.appendText(m.getAuthor().getLogin() + " :\n" + m.getContent() + "\n\n");
+                    areaConv.appendText(m.getAuthor().getLogin()
+                            + " (" +  m.getDateDDMMYYY()
+                            + ") :\n" + m.getContent() + "\n-----------------\n");
                 }
             }
         });

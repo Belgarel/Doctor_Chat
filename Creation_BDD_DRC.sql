@@ -6,9 +6,9 @@ create table DRC_UTILISATEUR  (
 );
 
 create table DRC_CONTACT (
-    NO_UTILISATEUR_1    NUMBER,
-    NO_UTILISATEUR_2    NUMBER,
-    constraint DRC_CONTACT_pk primary key (NO_UTILISATEUR_1, NO_UTILISATEUR_2)
+    NO_UTILISATEUR    NUMBER,
+    NO_CONTACT    NUMBER,
+    constraint DRC_CONTACT_pk primary key (NO_UTILISATEUR, NO_CONTACT)
 );
 
 create table DRC_CONVERSATION (
@@ -30,11 +30,11 @@ create table DRC_MESSAGE (
 );
 
 alter table DRC_CONTACT
-   add constraint DRC_CONTACT_NO_UTIL1_fk foreign key (UTILISATEUR_1)
+   add constraint DRC_CONTACT_NO_UTIL_fk foreign key (NO_UTILISATEUR)
       references DRC_UTILISATEUR;
       
 alter table DRC_CONTACT
-   add constraint DRC_CONTACT_NO_UTIL2_fk foreign key (UTILISATEUR_2)
+   add constraint DRC_CONTACT_NO_CONT_fk foreign key (NO_CONTACT)
       references DRC_UTILISATEUR;
 
 alter table DRC_PARTICIPE
@@ -59,36 +59,6 @@ RENAME COLUMN no_utilisateur_2 TO no_contact;
 
 COMMIT;
 
-/*Ajout de colonnes dans la table Message*/
-alter table drc_message add(
-    NO_AUTHOR   NUMBER  NOT NULL,
-    DATEPOSTED  DATE
-);
-alter table drc_message
-   add constraint DRC_MESSAGE_NO_AUTHOR_fk foreign key (NO_AUTHOR)
-      references DRC_UTILISATEUR;
-
-/*Autoincrémentation des messages*/
-CREATE SEQUENCE DRC_MESSAGE_PK_SEQ START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
-create or replace trigger drc_message_pk_autoincr
-before insert on drc_message for each row
-begin
-    select drc_message_pk_seq.nextval
-    into :new.no_message
-    from dual;
-end;
-/*Autoincrémentation des utilisateur*/
-CREATE SEQUENCE DRC_UTILISATEUR_PK_SEQ START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE;
-create or replace trigger drc_utilisateur_pk_autoincr
-before insert on drc_utilisateur for each row
-begin
-    select drc_utilisateur_pk_seq.nextval
-    into :new.no_utilisateur
-    from dual;
-end;
-
-/*Insertion de valeurs*/
-
 INSERT INTO drc_conversation VALUES (1);
 INSERT INTO drc_conversation VALUES (2);
 INSERT INTO drc_conversation VALUES (3);
@@ -110,11 +80,8 @@ INSERT INTO drc_participe VALUES (6, 5);
 
 ALTER TABLE drc_message ADD message CLOB;
 
-INSERT INTO DRC_MESSAGE (NO_CONVERSATION, NOM_FICHIER, MESSAGE, DATEPOSTED, NO_AUTHOR)
- VALUES (1, NULL, 'test message convers 1', TO_DATE('05/12/1992', 'DD/MM/YYYY'), 1);
-INSERT INTO DRC_MESSAGE (NO_CONVERSATION, NOM_FICHIER, MESSAGE, DATEPOSTED, NO_AUTHOR)
- VALUES (3, NULL, 'test message convers 2', TO_DATE('27/10/2017', 'DD/MM/YYYY'), 3);
-INSERT INTO DRC_MESSAGE (NO_CONVERSATION, NOM_FICHIER, MESSAGE, DATEPOSTED, NO_AUTHOR)
- VALUES (5, NULL, 'test message convers 3', TO_DATE('29/02/2000', 'DD/MM/YYYY'), 5);
+INSERT INTO drc_message VALUES (1, 1, NULL, 'test message convers 1');
+INSERT INTO drc_message VALUES (2, 3, NULL, 'test message convers 2');
+INSERT INTO drc_message VALUES (3, 5, NULL, 'test message convers 3');
 
 COMMIT;
