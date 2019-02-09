@@ -227,6 +227,7 @@ System.out.println("Not listening to client " + this.id + " anymore.");
             ContactService.instance().createContact(requester.getNum(), contact.getNum());
             ContactService.instance().createContact(contact.getNum(), requester.getNum()); //bricolage
             sendServerMessage(new ContactOK(contact));
+            this.server.sendMessageToClient(new ContactOK(requester), contact);
         } catch (NotFoundException ex) {
             sendServerMessage(new ContactFail("Erreur : l'utilisateur "
                     + message.getContactLogin() + " n'existe pas."));

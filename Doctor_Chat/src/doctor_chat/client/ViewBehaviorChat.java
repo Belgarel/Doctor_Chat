@@ -60,7 +60,9 @@ System.out.println("starting conversation " + conv.getId());
 
     @Override
     public void contactOK(ContactOK mess) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ViewController.instance().getAccount().addContact(mess.getContactAccount().getNum());
+        ViewController.instance().getContacts().add(mess.getContactAccount());
+        controller.updateContacts();
     }
     @Override
     public void contactFail(ContactFail mess) {
