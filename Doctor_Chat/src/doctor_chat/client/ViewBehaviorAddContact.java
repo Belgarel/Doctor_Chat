@@ -23,7 +23,12 @@ public class ViewBehaviorAddContact extends ViewBehaviorChat {
 
     @Override
     public void contactOK(ContactOK mess) {
-        //TODO
+        ViewController.instance().getAccount().addContact(mess.getContactAccount().getNum());
+        ViewController.instance().getContacts().add(mess.getContactAccount());
+        controller.updateContacts();
+       
+        /** Créer une méthode dans ViewController pour fermer la popup et maj la stratégie, essayer avec cancel pour démarrer **/
+       ViewController.instance().cancelAddContact();
     }
     @Override
     public void contactFail(ContactFail mess) {
@@ -34,3 +39,4 @@ public class ViewBehaviorAddContact extends ViewBehaviorChat {
         contactController.showError(err);
     }
 }
+//
