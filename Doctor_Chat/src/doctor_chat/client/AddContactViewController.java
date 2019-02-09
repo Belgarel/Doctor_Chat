@@ -75,7 +75,7 @@ public class AddContactViewController {
 
     @FXML
     private void cancel(ActionEvent event) {  
-          //
+          ViewController.instance().cancelAddContact();
     }
     
     public void showError(String err) {

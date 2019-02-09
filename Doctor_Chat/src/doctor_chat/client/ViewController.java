@@ -77,6 +77,7 @@ public class ViewController {
             }}
         );
     }
+      
     public void askContact() {
         Platform.runLater(new Runnable() {
             @Override
@@ -103,28 +104,17 @@ public class ViewController {
             }}
         );
     }
-    /**
-     * This function checks if a contact login is in the list of the user's contacts, then coordinates with the server to make sure it is.
-     * It is called by an add-contact pop-up and it does not close it.
-     * @param contactLogin login of the requested contact
-     */
-    public void sendAddContactRequest(String contactLogin) {
-        //Vérifier que quelque chose a été renvoyé.
-        if (contactLogin == null || "".equals(contactLogin))
-            return;
-        //Vérifier que le login ne fait pas déjà partie des contacts.
-        boolean found = false;
-        for (User u : ViewController.instance().getContacts())
-            found = contactLogin.equals(u.getLogin());
-        if (found) {
-            behavior.showError("Erreur : " + contactLogin + " fait déjà partie de vos contacts.");
-            return;
-        }
-        try {
-            Client.instance().sendMessage(new ContactRequest(ViewController.instance().getAccount(), contactLogin));
-        } catch (ConnectionNotInitializedException ex) {
-            Logger.getLogger(ChatViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    
+    public void cancelAddContact()
+    {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                askContactDialog.close();    
+            }
+        });
+        ChatViewController mainWindowsController = ((ViewBehaviorAddContact) behavior).getController();
+       behavior = new ViewBehaviorChat(mainWindowsController);
     }
     
     public User getAccount() {
@@ -167,5 +157,4 @@ public class ViewController {
         }
         return instance;
     }
-    
-}
+        }

@@ -102,7 +102,12 @@ public class ChatViewController implements Initializable {
         buttons.add(this.addContact);
         
         ObservableList<Button> contacts = FXCollections.observableArrayList(buttons);
-        contactList.setItems(contacts);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                contactList.setItems(contacts);
+            }
+        });
     }
     
     private void chatWith(ActionEvent ae) {
