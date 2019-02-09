@@ -62,6 +62,11 @@ System.out.println("Le client " + discClient.getId() + " vient de se déconnecte
         return discClient;
     }
     
+    public void sendMessageToClient(ServerMessage mess, User user) {
+        HashSet<User> clients = new HashSet<User>();
+        clients.add(user);
+        sendMessageToClients(mess, clients);
+    }
     public void sendMessageToClients(ServerMessage mess, HashSet<User> users) {
         users = (HashSet<User>) users.clone();
         synchronized (clients) { //coûteux, mais évite que le message soit envoyé à un client qui n'existe plus !
