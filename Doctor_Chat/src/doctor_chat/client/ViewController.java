@@ -5,11 +5,8 @@
  */
 package doctor_chat.client;
 
-import doctor_chat.client.connection.Client;
-import doctor_chat.client.connection.ConnectionNotInitializedException;
 import doctor_chat.common.Conversation;
 import doctor_chat.common.User;
-import doctor_chat.common.connection.ContactRequest;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -105,7 +102,7 @@ public class ViewController {
         );
     }
     
-    public void cancelAddContact()
+    public void closeAskContact()
     {
         Platform.runLater(new Runnable() {
             @Override
