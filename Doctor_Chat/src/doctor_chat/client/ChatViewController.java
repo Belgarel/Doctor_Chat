@@ -29,6 +29,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 /**
@@ -43,13 +44,12 @@ public class ChatViewController implements Initializable {
     @FXML
     private TextArea fieldMsg;
     @FXML
-    private Button btnSendMsg;
-    @FXML
-    private Button btnClearMsg;
-     @FXML
     private ListView contactList;
-     
+    @FXML
     private Button addContact;
+    @FXML
+    private Label lblTitre;
+    
     private Conversation currentConversation;
 
     /**
@@ -60,6 +60,7 @@ public class ChatViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         updateContacts();
+        lblTitre.setText("Dr. Chat - Login :  " + ViewController.instance().getAccount().getLogin());
         currentConversation = null;
     }    
 
@@ -78,6 +79,7 @@ public class ChatViewController implements Initializable {
                 currentConversation);
         try {
             Client.instance().sendMessage(new MessagePost(message));
+            fieldMsg.clear();
         } catch (ConnectionNotInitializedException ex) {
             showError("La connection n'est pas intialisée.");
         }

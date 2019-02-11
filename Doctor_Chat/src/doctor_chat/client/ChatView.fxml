@@ -9,21 +9,27 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="doctor_chat.client.ChatViewController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="doctor_chat.client.ChatViewController">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="365.0" prefWidth="603.0" VBox.vgrow="ALWAYS">
       <children>
-            <Button fx:id="btnSendMsg" layoutX="528.0" layoutY="313.0" mnemonicParsing="false" onAction="#sendMessage" text="Envoyer" />
+            <Button fx:id="btnSendMsg" layoutX="450.0" layoutY="313.0" mnemonicParsing="false" onAction="#sendMessage" onKeyPressed="#sendMessage" prefHeight="32.0" prefWidth="133.0" text="Envoyer" />
             <Accordion layoutX="261.0" layoutY="129.0" />
-            <TextArea fx:id="areaConv" editable="false" layoutX="14.0" layoutY="48.0" prefHeight="265.0" prefWidth="430.0" promptText="Conversations..." />
-            <Button fx:id="btnClearMsg" layoutX="520.0" layoutY="351.0" mnemonicParsing="false" onAction="#clearMessage" prefHeight="32.0" prefWidth="63.0" text="Effacer" />
-            <Label layoutX="14.0" layoutY="10.0" text="Doctor Chat">
+            <TextArea fx:id="areaConv" editable="false" layoutX="14.0" layoutY="47.0" prefHeight="255.0" prefWidth="430.0" promptText="Conversations...">
+               <font>
+                  <Font name="Calibri" size="13.0" />
+               </font></TextArea>
+            <Button fx:id="btnClearMsg" layoutX="450.0" layoutY="354.0" mnemonicParsing="false" onAction="#clearMessage" onKeyPressed="#clearMessage" prefHeight="32.0" prefWidth="133.0" text="Effacer" />
+            <Label fx:id="lblTitre" layoutX="14.0" layoutY="14.0" text="Doctor Chat">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextArea fx:id="fieldMsg" layoutX="14.0" layoutY="313.0" prefHeight="75.0" prefWidth="499.0" promptText="Tapez votre Message.." />
-            <ListView fx:id="contactList" layoutX="453.0" layoutY="48.0" prefHeight="265.0" prefWidth="133.0" />
+            <TextArea fx:id="fieldMsg" layoutX="14.0" layoutY="313.0" onKeyPressed="#sendMessage" prefHeight="74.0" prefWidth="430.0" promptText="Tapez votre Message..">
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font></TextArea>
+            <ListView fx:id="contactList" layoutX="454.0" layoutY="47.0" prefHeight="255.0" prefWidth="133.0" />
       </children>
     </AnchorPane>
   </children>
