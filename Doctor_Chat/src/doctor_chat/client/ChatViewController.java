@@ -175,6 +175,11 @@ public class ChatViewController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                lblTitre.setText("Dr. Chat - Login :  " + ViewController.instance().getAccount().getLogin() + " - conversation avec ");
+                for (User member : conversation.getMembers())
+                    if (!ViewController.instance().getAccount().getLogin().equals(member.getLogin()))
+                        lblTitre.setText(lblTitre.getText().concat(" " + member.getLogin()));
+                
                 areaConv.clear();
                 currentConversation = conversation;
                 for (Message m : conversation.getMessages()) {
