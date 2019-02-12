@@ -59,3 +59,8 @@ alter table DRC_PARTICIPE
 alter table DRC_MESSAGE
    add constraint DRC_MESSAGE_NO_CONVERS_FK foreign key (NO_CONVERSATION)
       references DRC_CONVERSATION;
+      
+ -- Remise à 0 de l'auto-increment sur drc_message
+ALTER sequence  drc_message_pk_seq increment by 1 minvalue 0;
+DELETE FROM drc_message;
+SELECT drc_message_pk_seq.nextval from dual;
