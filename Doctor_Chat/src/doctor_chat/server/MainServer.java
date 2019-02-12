@@ -22,11 +22,17 @@ import java.util.logging.Logger;
 public class MainServer {
     public static void main(String[] args) {
         try {
-            Server serv = new Server(8080);
-            
+
+
+            if (args.length != 1)
+                throw new IllegalArgumentException("java -jar Doctor_chat_server.jar numero_de_port");
+            try {
+                int port = Integer.valueOf(args[0]);
+                Server serv = new Server(port);
+            } catch (NumberFormatException nfe) { throw new IllegalArgumentException("java -jar Doctor_chat_server.jar numero_de_port"); }
             
         } catch (IOException ex) {
             Logger.getLogger(MainServer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (IllegalArgumentException iae) { System.out.println(iae.getMessage()); }
     }    
 }
