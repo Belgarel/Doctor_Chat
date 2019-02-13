@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -45,6 +46,8 @@ public class ViewController {
                             getClass().getResource(
                             "ConnectionView.fxml"));
                     Parent root = loader.load();
+                    stage.initStyle(StageStyle.UNIFIED);
+                    stage.setTitle("Doctor Chat");
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();

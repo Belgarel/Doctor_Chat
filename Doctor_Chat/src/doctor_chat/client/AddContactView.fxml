@@ -4,20 +4,36 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="143.0" prefWidth="523.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="doctor_chat.client.AddContactViewController">
+<AnchorPane id="AnchorPane" prefHeight="143.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/8.0.191" xmlns:fx="http://javafx.com/fxml/1" fx:controller="doctor_chat.client.AddContactViewController">
    <children>
-      <TextField fx:id="loginField" layoutX="158.0" layoutY="61.0" />
-      <Label layoutX="40.0" layoutY="65.0" text="Login du contact :" />
-      <Label layoutX="40.0" layoutY="21.0" text="Ajouter un Contact :">
+      <Label layoutX="189.0" layoutY="19.0" text="Nouveau Contact">
          <font>
-            <Font size="13.0" />
+            <Font name="Calibri Bold" size="22.0" />
          </font>
       </Label>
-      <Button layoutX="351.0" layoutY="61.0" mnemonicParsing="false" onAction="#send" text="Envoyer" />
-      <Button layoutX="427.0" layoutY="61.0" mnemonicParsing="false" onAction="#cancel" text="Annuler" />
-      <Label fx:id="errorLabel" layoutX="40.0" layoutY="103.0" textFill="RED" />
+      <Pane layoutX="33.0" layoutY="62.0" prefHeight="36.0" prefWidth="464.0">
+         <children>
+            <Label layoutX="-3.0" layoutY="5.0" prefHeight="24.0" prefWidth="91.0" text="Nom (login)">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="loginField" layoutX="86.0" layoutY="1.0" prefHeight="32.0" prefWidth="173.0" />
+            <Button layoutX="274.0" layoutY="1.0" mnemonicParsing="false" onAction="#send" prefHeight="32.0" prefWidth="80.0" text="Envoyer">
+               <font>
+                  <Font name="Calibri Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="363.0" layoutY="2.0" mnemonicParsing="false" onAction="#cancel" prefHeight="32.0" prefWidth="80.0" text="Annuler">
+               <font>
+                  <Font name="Calibri Bold" size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <Label fx:id="errorLabel" layoutX="61.0" layoutY="109.0" prefHeight="24.0" prefWidth="244.0" textFill="RED" />
    </children>
 </AnchorPane>

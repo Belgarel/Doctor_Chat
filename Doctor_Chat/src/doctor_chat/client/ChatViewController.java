@@ -59,34 +59,49 @@ public class ChatViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        updateContacts();
-        lblTitre.setText("Dr. Chat - Login :  " + ViewController.instance().getAccount().getLogin());
-        currentConversation = null;
+         updateContacts();
+         Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                lblTitre.setText("Bienvenue " + ViewController.instance().getAccount().getLogin());
+                currentConversation = null;
+                 }
+         });
     }    
 
     @FXML
     private void sendMessage(ActionEvent event) {
         //if no conversation is selected, no message can be sent
         if (currentConversation == null) {
-            showError("Sélectionnez une conversation");
+            showError("Sélectionner une conversation");
             return;
         }
-        
-        Message message = new Message(Calendar.getInstance().getTime(),
-                fieldMsg.getText(),
-                null, //no filepath yet -> feature dropped
-                ViewController.instance().getAccount(),
-                currentConversation);
-        try {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Message message = new Message(Calendar.getInstance().getTime(),
+                    fieldMsg.getText(),
+                    null, //no filepath yet -> feature dropped
+                    ViewController.instance().getAccount(),
+                    currentConversation);
+           try {
             Client.instance().sendMessage(new MessagePost(message));
             fieldMsg.clear();
-        } catch (ConnectionNotInitializedException ex) {
-            showError("La connection n'est pas intialisée.");
-        }
+                }   catch (ConnectionNotInitializedException ex) {
+                    showError("La connection n'est pas intialisée.");
+                    }
+            }
+        });
     }
+    
     @FXML
     private void clearMessage(ActionEvent event) {
-        fieldMsg.clear();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                 fieldMsg.clear();
+            }
+        });
     }
     
     public void updateContacts() {
@@ -175,7 +190,7 @@ public class ChatViewController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                lblTitre.setText("Dr. Chat - Login :  " + ViewController.instance().getAccount().getLogin() + " - conversation avec ");
+                lblTitre.setText(ViewController.instance().getAccount().getLogin() + " - Discussion en cours avec");
                 for (User member : conversation.getMembers())
                     if (!ViewController.instance().getAccount().getLogin().equals(member.getLogin()))
                         lblTitre.setText(lblTitre.getText().concat(" " + member.getLogin()));
